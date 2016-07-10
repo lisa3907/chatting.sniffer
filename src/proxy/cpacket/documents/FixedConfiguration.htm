@@ -1,0 +1,387 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+	<head>
+		<title></title>
+	</head>
+	<body>
+        <h2 class="title-page">
+            Cisco Catalyst Fixed Configuration Layer 2 and Layer 3 Switches</h2>
+        <h2>
+            Contents</h2>
+        <blockquote>
+            <b><a href="#intro">Introduction</a></b><br />
+            <b><a href="#before">Before You Begin</a></b><br />
+            &nbsp; &nbsp; &nbsp; <a href="#conv">Conventions</a><br />
+            &nbsp; &nbsp; &nbsp; <a href="#pre">Prerequisites</a><br />
+            <b><a href="#topic1">Step-by-Step Procedure</a></b><br />
+            <b><a href="#related">Related Information</a></b><br />
+        </blockquote>
+        <hr />
+        <h2>
+            <a name="intro">Introduction</a></h2>
+        <p>
+            This document describes the password recovery procedure for the Cisco Catalyst Layer
+            2 fixed configuration switches 2900XL/3500XL, 2940, 2950/2955, 2960, and 2970 Series,
+            as well as the Cisco Catalyst Layer 3 fixed configuration switches 3550, 3560, and
+            3750 Series.</p>
+        <h2>
+            <a name="before">Before You Begin</a></h2>
+        <h3>
+            <a name="conv">Conventions</a></h3>
+        <p>
+            For more information on document conventions, see the <a href="/en/US/tech/tk801/tk36/technologies_tech_note09186a0080121ac5.shtml">
+                Cisco Technical Tips Conventions</a>.</p>
+        <h3>
+            <a name="pre">Prerequisites</a></h3>
+        <p>
+            There are no specific prerequisites for this document.</p>
+        <h2>
+            <a name="topic1">Step-by-Step Procedure</a></h2>
+        <p>
+            Follow the password recovery procedure below.</p>
+        <ol type="1">
+            <li>
+                <p>
+                    Attach a terminal or PC with terminal emulation (for example, Hyper Terminal) to
+                    the console port of the switch.</p>
+                <p>
+                    Use the following terminal settings:</p>
+                <ul>
+                    <li>
+                        <p>
+                            Bits per second (baud): 9600</p>
+                    </li>
+                    <li>
+                        <p>
+                            Data bits: 8</p>
+                    </li>
+                    <li>
+                        <p>
+                            Parity: None</p>
+                    </li>
+                    <li>
+                        <p>
+                            Stop bits: 1</p>
+                    </li>
+                    <li>
+                        <p>
+                            Flow Control: Xon/Xoff</p>
+                    </li>
+                </ul>
+                <p>
+                    <b>Note: </b>For additional information on cabling and connecting a terminal to
+                    the console port, refer to <a href="/en/US/products/hw/switches/ps700/products_tech_note09186a008010ff7a.shtml#Cat1900">
+                        Connecting a Terminal to the Console Port on Catalyst Switches</a>.</p>
+            </li>
+            <li>
+                <p>
+                    Unplug the power cable.</p>
+            </li>
+            <li>
+                <p>
+                    Power the switch and bring it to the <tt>switch:</tt> prompt:</p>
+                <p>
+                    <b>For 2900XL, 3500XL, 2940, 2950, 2960, 2970, 3550, 3560, and 3750 series switches,
+                        do this:</b></p>
+                <p>
+                    Hold down the mode button located on the left side of the front panel, while you
+                    reconnect the power cable to the switch.</p>
+                <table bgcolor="#ffffff" border="1" cellpadding="3" cellspacing="1" width="60%">
+                    <tr>
+                        <th bgcolor="#ccccff">
+                            <p>
+                                Catalyst Switch Series</p>
+                        </th>
+                        <th bgcolor="#ccccff">
+                            <p>
+                                LED Behavior and Mode Button Release Action</p>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#ffffff">
+                            <p>
+                                2900XL, 3500XL, 3550</p>
+                        </td>
+                        <td bgcolor="#ffffff">
+                            <p>
+                                Release the Mode button when the LED above <b>Port1x</b> goes out.</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#ffffff">
+                            <p>
+                                2940, 2950</p>
+                        </td>
+                        <td bgcolor="#ffffff">
+                            <p>
+                                Release the Mode button after approximately 5 seconds when the Status (<b>STAT</b>)
+                                LED goes out. When you release the Mode button, the <b>SYST</b> LED blinks amber.</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#ffffff">
+                            <p>
+                                2960, 2970</p>
+                        </td>
+                        <td bgcolor="#ffffff">
+                            <p>
+                                Release the Mode button when the <b>SYST</b> LED blinks amber and then turns solid
+                                green. When you release the Mode button, the <b>SYST</b> LED blinks green.</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#ffffff">
+                            <p>
+                                3560, 3750</p>
+                        </td>
+                        <td bgcolor="#ffffff">
+                            <p>
+                                Release the Mode button after approximately 15 seconds when the <b>SYST</b> LED
+                                turns solid green. When you release the Mode button, the <b>SYST</b> LED blinks
+                                green.</p>
+                        </td>
+                    </tr>
+                </table>
+                <p>
+                </p>
+                <p>
+                    <b>Note: </b>LED position may vary slightly depending on the model.</p>
+                <p>
+                    <b>Catalyst 3524XL</b></p>
+                <p>
+                    <img alt="pswdrec_2900xl_1.gif" border="0" src="http://www.cisco.com/warp/public/474/pswdrec_2900xl_1.gif"
+                        usemap="" /></p>
+                <p>
+                    <b>Catalyst 2950-24</b></p>
+                <p>
+                    <img alt="pswdrec_2900xl_2.gif" border="0" src="http://www.cisco.com/warp/public/474/pswdrec_2900xl_2.gif"
+                        usemap="" /></p>
+                <p>
+                    <b>For 2955 series switches only:</b></p>
+                <p>
+                    The Catalyst 2955 series switches do not use an external mode button for password
+                    recovery. Instead the switch boot loader uses the break-key detection to stop the
+                    automatic boot sequence for the password recovery purposes. The break sequence is
+                    determined by the terminal application and operating system used. Hyperterm running
+                    on Windows 2000 uses <b>Ctrl + Break</b>. On a workstation running UNIX, <b>Ctrl-C</b>
+                    is the break key. For more information, refer to <a href="/en/US/products/hw/routers/ps133/products_tech_note09186a0080174a34.shtml">
+                        Standard Break Key Sequence Combinations During Password Recovery</a>.</p>
+                <p>
+                    The example below uses Hyperterm to break into <b><i>switch:</i></b> mode on a 2955.</p>
+                <blockquote>
+                    <pre>
+C2955 Boot Loader (C2955-HBOOT-M) Version 12.1(0.0.514), CISCO DEVELOPMENT TEST
+VERSION
+Compiled Fri 13-Dec-02 17:38 by madison
+WS-C2955T-12 starting...
+Base ethernet MAC Address: 00:0b:be:b6:ee:00
+Xmodem file system is available.
+Initializing Flash...
+flashfs[0]: 19 files, 2 directories
+flashfs[0]: 0 orphaned files, 0 orphaned directories
+flashfs[0]: Total bytes: 7741440
+flashfs[0]: Bytes used: 4510720
+flashfs[0]: Bytes available: 3230720
+flashfs[0]: flashfs fsck took 7 seconds.
+...done initializing flash.
+Boot Sector Filesystem (bs:) installed, fsid: 3
+Parameter Block Filesystem (pb:) installed, fsid: 4
+
+<b>*** The system will autoboot in 15 seconds *** Send break character to prevent autobooting.</b>
+
+<i> <font color="#0000ff">!--- Wait until you see this message before !--- you issue
+    the break sequence. !--- Ctrl+Break is entered using Hyperterm.</font> </i>
+
+The system has been interrupted prior to initializing the flash file system to finish 
+loading the operating system software:
+
+flash_init
+load_helper
+boot
+switch:</pre>
+                </blockquote>
+            </li>
+            <li>
+                <p>
+                    Issue the <b>flash_init</b> command.</p>
+                <blockquote>
+                    <pre>
+switch: <b>flash_init</b>
+Initializing Flash...
+flashfs[0]: 143 files, 4 directories
+flashfs[0]: 0 orphaned files, 0 orphaned directories
+flashfs[0]: Total bytes: 3612672
+flashfs[0]: Bytes used: 2729472
+flashfs[0]: Bytes available: 883200
+flashfs[0]: flashfs fsck took 86 seconds
+....done Initializing Flash.
+Boot Sector Filesystem (bs:) installed, fsid: 3
+Parameter Block Filesystem (pb:) installed, fsid: 4
+switch:
+<i> <font color="#0000ff">!--- This output is from a 2900XL switch. Output from !---
+    other switches will vary slightly.</font> </i>
+</pre>
+                </blockquote>
+            </li>
+            <li>
+                <p>
+                    Issue the <b>load_helper</b> command.</p>
+                <blockquote>
+                    <pre>
+switch: <b>load_helper</b>
+switch:</pre>
+                </blockquote>
+            </li>
+            <li>
+                <p>
+                    Issue the <b>dir flash:</b> command.</p>
+                <p>
+                    <b>Note: </b>Make sure to type a colon ":" after the <b>dir flash</b>.</p>
+                <p>
+                    The switch file system is displayed:</p>
+                <blockquote>
+                    <pre>
+switch: <b>dir flash:</b>
+Directory of flash:/
+2    -rwx  1803357   &lt;date&gt;               <b>c3500xl-c3h2s-mz.120-5.WC7.bin</b>
+<i> <font color="#0000ff">!--- This is the current version of software.</font> </i>
+4    -rwx  1131      &lt;date&gt;               <b>config.text</b>
+<i> <font color="#0000ff">!--- This is the configuration file.</font> </i>
+5    -rwx  109       &lt;date&gt;               info
+6    -rwx  389       &lt;date&gt;               env_vars
+7    drwx  640       &lt;date&gt;               html
+18   -rwx  109       &lt;date&gt;               info.ver
+403968 bytes available (3208704 bytes used)
+switch:
+<i><font color="#0000ff">!--- This output is from a 3500XL switch. Output from !---
+    other switches will vary slightly.</font> </i>
+</pre>
+                </blockquote>
+            </li>
+            <li>
+                <p>
+                    Type <b>rename flash:config.text flash:config.old</b> to rename the configuration
+                    file.</p>
+                <blockquote>
+                    <pre>
+switch: <b>rename flash:config.text flash:config.old</b>
+switch:
+<i> <font color="#0000ff">!--- The <b>config.text</b> file contains the password !---
+    definition.</font> </i>
+</pre>
+                </blockquote>
+            </li>
+            <li>
+                <p>
+                    Issue the <b>boot</b> command to boot the system.</p>
+                <blockquote>
+                    <pre>
+switch: <b>boot</b>
+Loading "flash:c3500xl-c3h2s-mz.120-5.WC7.bin"...###############################
+################################################################################
+######################################################################
+File "flash:c3500xl-c3h2s-mz.120-5.WC7.bin" uncompressed and installed, entry po
+int: 0x3000
+executing...
+<i> <font color="#0000ff">!--- Output suppressed. !--- This output is from a 3500XL
+    switch. Output from other switches !--- will vary slightly.</font> </i>
+</pre>
+                </blockquote>
+            </li>
+            <li>
+                <p>
+                    Enter "<b>n</b>" at the prompt to abort the initial configuration dialog.</p>
+                <blockquote>
+                    <pre>
+--- System Configuration Dialog ---
+At any point you may enter a question mark '?' for help.
+Use ctrl-c to abort configuration dialog at any prompt.
+Default settings are in square brackets '[]'.
+Continue with configuration dialog? [yes/no]: n 
+<i><font color="#0000ff">!--- Type "n" for no.</font> </i>
+Press RETURN to get started.
+<i><font color="#0000ff">!--- Press <b>Return</b> or <b>Enter</b>.</font> </i>
+Switch&gt;
+<i><font color="#0000ff">!--- The Switch&gt; prompt is displayed.</font> </i>
+</pre>
+                </blockquote>
+            </li>
+            <li>
+                <p>
+                    At the switch prompt, type <b>en</b> to enter enable mode.</p>
+                <blockquote>
+                    <pre>
+Switch&gt;<b>en</b>
+Switch#</pre>
+                </blockquote>
+            </li>
+            <li>
+                <p>
+                    Type <b>rename flash:config.old flash:config.text</b> to rename the configuration
+                    file with its original name.</p>
+                <blockquote>
+                    <pre>
+Switch#<b>rename flash:config.old flash:config.text</b>
+Destination filename [config.text] 
+<i> <font color="#0000ff">!--- Press <b>Return</b> or <b>Enter</b>.</font> </i>
+Switch#</pre>
+                </blockquote>
+            </li>
+            <li>
+                <p>
+                    Copy the configuration file into memory.</p>
+                <blockquote>
+                    <pre>
+Switch#<b>copy flash:config.text system:running-config</b>
+Destination filename [running-config]? 
+<i> <font color="#0000ff">!--- Press <b>Return</b> or <b>Enter</b>.</font> </i>
+1131 bytes copied in 0.760 secs
+Sw1#</pre>
+                </blockquote>
+                <p>
+                    The configuration file is now reloaded.</p>
+            </li>
+            <li>
+                <p>
+                    Overwrite the current passwords that you do not know. Choose a strong password with
+                    at least one capital letter, one number, and one special character.</p>
+                <p>
+                    <b>Note: </b>Overwrite the passwords which are necessary. You need not overwrite
+                    all of the mentioned passwords.</p>
+                <blockquote>
+                    <pre>
+Sw1# <b>conf t</b>
+
+<i> <font color="#0000ff">!--- To overwrite existing secret password</font> </i>
+Sw1(config)#<b>enable secret <i>&lt;new_secret_password&gt;</i> </b>
+
+<i><font color="#0000ff">!--- To overwrite existing enable password</font> </i>
+Sw1(config)#<b>enable password <i>&lt;new_enable_password&gt;</i> </b>
+
+<i><font color="#0000ff">!--- To overwrite existing vty password</font> </i>
+Sw1(config)#<b>line vty 0 15</b>
+Sw1(config-line)#<b>password <i>&lt;new_vty_password&gt;</i> </b>
+Sw1(config-line)#<b>login</b>
+
+<i> <font color="#0000ff">!--- To overwrite existing console password</font> </i>
+Sw1(config-line)#<b>line con 0</b>
+Sw1(config-line)#<b>password <i>&lt;new_console_password&gt;</i> </b>
+</pre>
+                </blockquote>
+            </li>
+            <li>
+                <p>
+                    Write the running configuration to the configuration file with the <b>write memory</b>
+                    command.</p>
+                <blockquote>
+                    <pre>
+Sw1#<b>write memory</b>
+Building configuration...
+[OK]
+Sw1#</pre>
+                </blockquote>
+            </li>
+        </ol>
+	
+	</body>
+</html>

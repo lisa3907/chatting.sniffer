@@ -1,0 +1,345 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{83D4F29B-452E-4E17-8B4F-75A0C11DDB07}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Sniffer.Client.Viewer</RootNamespace>
+    <AssemblyName>Sniffer.Client.Viewer.V45</AssemblyName>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevExpress.Printing.v13.2.Core, Version=13.2.13.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Data.v13.2, Version=13.2.13.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Utils.v13.2, Version=13.2.13.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraBars.v13.2, Version=13.2.13.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraEditors.v13.2, Version=13.2.13.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraPrinting.v13.2, Version=13.2.13.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraGrid.v13.2, Version=13.2.13.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="OdinSoft.EXT.Data.MySQL.V45">
+      <HintPath>..\..\..\..\..\odinsoft-git\ubsvc3\sdk\output\V4.5.2016.02\Debug\OdinSoft.EXT.Data.MySQL.V45.dll</HintPath>
+    </Reference>
+    <Reference Include="OdinSoft.EXT.Data.NpgSQL.V45">
+      <HintPath>..\..\..\..\..\odinsoft-git\ubsvc3\sdk\output\V4.5.2016.02\Debug\OdinSoft.EXT.Data.NpgSQL.V45.dll</HintPath>
+    </Reference>
+    <Reference Include="OdinSoft.LIB.Configuration.V45">
+      <HintPath>..\..\..\..\..\odinsoft-git\ubsvc3\sdk\output\V4.5.2016.02\Debug\OdinSoft.LIB.Configuration.V45.dll</HintPath>
+    </Reference>
+    <Reference Include="OdinSoft.LIB.Data.V45">
+      <HintPath>..\..\..\..\..\odinsoft-git\ubsvc3\sdk\output\V4.5.2016.02\Debug\OdinSoft.LIB.Data.V45.dll</HintPath>
+    </Reference>
+    <Reference Include="OdinSoft.LIB.Queue.V45">
+      <HintPath>..\..\..\..\..\odinsoft-git\ubsvc3\sdk\output\V4.5.2016.02\Debug\OdinSoft.LIB.Queue.V45.dll</HintPath>
+    </Reference>
+    <Reference Include="OdinSoft.LIB.Security.V45">
+      <HintPath>..\..\..\..\..\odinsoft-git\ubsvc3\sdk\output\V4.5.2016.02\Debug\OdinSoft.LIB.Security.V45.dll</HintPath>
+    </Reference>
+    <Reference Include="OdinSoft.UIC.Win.Control.V45">
+      <HintPath>..\..\..\..\..\odinsoft-git\ubsvc3\sdk\output\V4.5.2016.02\Debug\OdinSoft.UIC.Win.Control.V45.dll</HintPath>
+    </Reference>
+    <Reference Include="OdinSoft.UTL.Signer.V45">
+      <HintPath>..\..\..\..\..\odinsoft-git\ubsvc3\sdk\output\V4.5.2016.02\Debug\OdinSoft.UTL.Signer.V45.dll</HintPath>
+    </Reference>
+    <Reference Include="Parse.Net, Version=3.0.1.5, Culture=neutral, PublicKeyToken=986a9aa31056680b, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\odinsoft-git\ubsvc3\sdk\tools\assembly\easymail\Parse.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="SMTP.Net, Version=3.0.1.5, Culture=neutral, PublicKeyToken=986a9aa31056680b, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\odinsoft-git\ubsvc3\sdk\tools\assembly\easymail\SMTP.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UIAutomationClient">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ChatView\ChatViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChatView\ChatViewer.Designer.cs">
+      <DependentUpon>ChatViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChatView\SpamMgr.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChatView\SpamMgr.Designer.cs">
+      <DependentUpon>SpamMgr.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialog\ConnString.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialog\ConnString.Designer.cs">
+      <DependentUpon>ConnString.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MailView\MailContent.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MailView\MailContent.Designer.cs">
+      <DependentUpon>MailContent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MailView\MailReader.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MailView\MailReader.Designer.cs">
+      <DependentUpon>MailReader.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MailView\MailViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MailView\MailViewer.Designer.cs">
+      <DependentUpon>MailViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MailView\SpamMgr.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MailView\SpamMgr.Designer.cs">
+      <DependentUpon>SpamMgr.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainViewer.Designer.cs">
+      <DependentUpon>MainViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="ChatView\ChatViewer.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ChatViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChatView\SpamMgr.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SpamMgr.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialog\ConnString.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ConnString.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MailView\MailContent.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MailContent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MailView\MailReader.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MailReader.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MailView\MailViewer.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MailViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MailView\SpamMgr.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SpamMgr.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainViewer.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MainViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="images\Address.bmp" />
+    <Content Include="images\Archive.bmp" />
+    <Content Include="images\Calendar24.bmp" />
+    <Content Include="images\cancel.gif" />
+    <Content Include="images\Contacts24.bmp" />
+    <Content Include="images\Copy.bmp" />
+    <Content Include="images\Cut.bmp" />
+    <Content Include="images\Delete.bmp" />
+    <Content Include="images\delete.gif" />
+    <Content Include="images\Drafts.bmp" />
+    <Content Include="images\Error.bmp" />
+    <Content Include="images\Find.bmp" />
+    <Content Include="images\Flag.bmp" />
+    <Content Include="images\Folder.bmp" />
+    <Content Include="images\Folder24.bmp" />
+    <Content Include="images\Forward.bmp" />
+    <Content Include="images\Help.bmp" />
+    <Content Include="images\Inbox.bmp" />
+    <Content Include="images\inquire.gif" />
+    <Content Include="images\InternetFax.bmp" />
+    <Content Include="images\JournalEntry.bmp" />
+    <Content Include="images\Junk.bmp" />
+    <Content Include="images\Mail24.bmp" />
+    <Content Include="images\modify.gif" />
+    <Content Include="images\Move.bmp" />
+    <Content Include="images\New.bmp" />
+    <Content Include="images\New.gif" />
+    <Content Include="images\New.png" />
+    <Content Include="images\NewAppointment.bmp" />
+    <Content Include="images\NewContact.bmp" />
+    <Content Include="images\NewDistributionList.bmp" />
+    <Content Include="images\NewFolder.bmp" />
+    <Content Include="images\NewMeetingRequest.bmp" />
+    <Content Include="images\NewSearchFolder.bmp" />
+    <Content Include="images\NewTask.bmp" />
+    <Content Include="images\Notes.bmp" />
+    <Content Include="images\Notes32.bmp" />
+    <Content Include="images\Outbox.bmp" />
+    <Content Include="images\Outlook.bmp" />
+    <Content Include="images\OutlookToday.bmp" />
+    <Content Include="images\Paste.bmp" />
+    <Content Include="images\Post.bmp" />
+    <Content Include="images\Post.png" />
+    <Content Include="images\Print.bmp" />
+    <Content Include="images\PrintPreview.bmp" />
+    <Content Include="images\Read.bmp" />
+    <Content Include="images\Read.gif" />
+    <Content Include="images\Recycle.bmp" />
+    <Content Include="images\Reply.bmp" />
+    <Content Include="images\ReplyAll.bmp" />
+    <Content Include="images\Rule.bmp" />
+    <Content Include="images\save.gif" />
+    <Content Include="images\Search.bmp" />
+    <Content Include="images\Send.bmp" />
+    <Content Include="images\Sent.bmp" />
+    <Content Include="images\Shortcut.bmp" />
+    <Content Include="images\Shortcut24.bmp" />
+    <Content Include="images\SyncError.bmp" />
+    <Content Include="images\Task.bmp" />
+    <Content Include="images\TaskRequest.bmp" />
+    <Content Include="images\Tasks24.bmp" />
+    <Content Include="images\TitleBarGrip.bmp" />
+    <Content Include="images\Unread.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\proxy\cpacket\cpacket.csproj">
+      <Project>{CFCC3CF8-2344-40FA-907D-EEAE2B261C7D}</Project>
+      <Name>cpacket</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\proxy\msn\msn.csproj">
+      <Project>{55D6D51B-B9DF-46BB-AB6D-6FEA7D2E764E}</Project>
+      <Name>msn</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\proxy\mail\mail.csproj">
+      <Project>{56332D67-3DE6-4735-B41D-97788D0823B8}</Project>
+      <Name>mail</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>:begin
+
+SET framebiz_path=$(SolutionDir)\output\V4.5.2013.10\$(ConfigurationName)
+if not exist %25framebiz_path%25 mkdir %25framebiz_path%25
+goto :target_copy
+
+:target_copy
+copy /Y $(TargetPath) %25framebiz_path%25
+if exist $(TargetPath).config copy /Y $(TargetPath).config %25framebiz_path%25
+if exist $(TargetName).xml copy /Y $(TargetName).xml %25framebiz_path%25
+goto :refence_copy
+
+:refence_copy
+if not $(TargetExt)==.exe goto end
+if not exist *.dll goto end
+copy /Y $(TargetDir)\*.dll %25framebiz_path%25
+goto end
+
+:end</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

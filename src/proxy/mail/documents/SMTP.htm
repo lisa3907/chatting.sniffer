@@ -1,0 +1,902 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+    <TITLE>
+    </TITLE>
+</HEAD>
+<BODY>
+    <H1>Requests, verbs, parameters, responses, and codes</H1>
+    An SMTP conversation consists of <B>requests</B> and <A href="message.html">encoded
+        messages</A> sent by the client and <B>responses</B> sent by the server.
+    <P>After the client connects, the server sends a response to the client, either <B>accepting</B>,
+        <B>temporarily rejecting</B>, or <B>permanently rejecting</B> the connection. This
+        initial response is called the server's <A href="greeting.html">greeting</A>. </P>
+    <P>If the server accepts the connection, the client sends zero or more requests to the
+        server. Each request is handled as follows: </P>
+    <OL>
+        <LI>The client sends the request to the server. </LI>
+        <LI>The server sends a response to the client, either accepting, temporarily rejecting,
+            or permanently rejecting the request. </LI>
+        <LI>Under some circumstances, if the server accepts the request, the client then sends
+            an encoded message to the server, and the server sends another response to the client,
+            either accepting, temporarily rejecting, or permanently rejecting the message. </LI>
+    </OL>
+    The client must not send a request or an encoded message until it has received the
+    previous response. (Exception: see the <A href="pipelining.html">PIPELINING</A>
+    extension.) If sendmail receives a <A href="mail.html#mail">MAIL</A> request in
+    the same packet as the next request, it will send an extra response to the client.
+    This loss of synchronization can easily corrupt or destroy mail.
+    <H2><A name="request"></A>Request format</H2>
+    A request is a string of bytes. It contains
+    <OL>
+        <LI>a <B>verb</B> consisting of alphabetic ASCII characters; </LI>
+        <LI>optionally, a space followed by a <B>parameter</B>; and </LI>
+        <LI><TT>\015\012</TT>. </LI>
+    </OL>
+    Some clients fail to include the <TT>\015</TT>, so I recommend that servers look
+    only for <TT>\012</TT>. The parameter cannot contain <TT>\012</TT>.
+    <P>For example, the following request (shown without the <TT>\015\012</TT>) contains
+        verb HELO with parameter heaven.af.mil: </P>
+    HELO heaven.af.mil A request with verb HELO is called a ``HELO request''; similar
+    comments apply to ``MAIL request'' and so on.
+    <P>RFC 821 requires that every server support the <A href="helo.html#helo">HELO</A>,
+        <A href="helo.html#rset">RSET</A>, <A href="helo.html#noop">NOOP</A>, <A href="mail.html#mail">
+            MAIL</A>, <A href="mail.html#rcpt">RCPT</A>, <A href="mail.html#data">DATA</A>,
+        and <A href="quit.html">QUIT</A> verbs. I also recommend that servers accept <A href="vrfy.html">
+            VRFY</A> and <A href="ehlo.html">EHLO</A> requests and announce the <A href="pipelining.html">
+                PIPELINING</A> and <A href="8bitmime.html">8BITMIME</A> extensions. <A href="../smtp.html#klensin">
+                    Klensin</A> requires that ``contemporary'' servers support EHLO. </P>
+    <H2>Request semantics</H2>
+    The meaning of a request depends on (1) the verb and (2) the parameter. The format
+    of the parameter depends on the verb.
+    <P>RFC 821 specified that all verbs are interpreted without regard to case; so HELO
+        and helo and Helo and hElO have the same meaning. However, a few SMTP servers do
+        not follow this rule. Today's SMTP clients send verbs in uppercase; I recommend
+        that new SMTP clients do the same thing. </P>
+    <H2><A name="response"></A>Response format</H2>
+    The server's response is a sequence of one or more lines. Each line contains
+    <OL>
+        <LI>three ASCII digits; </LI>
+        <LI>a single byte: viz., a space on the last line of the response, a hyphen on all previous
+            lines; </LI>
+        <LI>zero or more bytes of ``text''; and </LI>
+        <LI><TT>\015\012</TT>. </LI>
+    </OL>
+    Some servers (e.g., AltaVista Firewall version 1.14) fail to include the <TT>\015</TT>,
+    so I recommend that clients look only for <TT>\012</TT>. This means that <TT>\012</TT>
+    cannot be used inside ``text.'' It is also unsafe to use <TT>\0</TT> inside ``text.''
+    <P>According to rumor, some servers leave out the space on the last line of the response
+        when there is no text. </P>
+    <P>RFC 821 prohibits response lines longer than 512 bytes, and requires that all clients
+        be able to handle 512-byte response lines. </P>
+    <P>Each line of the response must start with the same three ASCII digits. The digits
+        form a <B>code</B>. Codes between 200 and 399 indicate acceptance; codes between
+        400 and 499 indicate temporary rejection; codes between 500 and 599 indicate permanent
+        rejection. </P>
+    <P>For example, the following three-line response uses code 250 to indicate acceptance:
+    </P>
+    250-heaven.af.mil 250-PIPELINING 250 8BITMIME
+    <P>RFC 821 prohibited all codes other than 211, 214, 220, 221, 250, 251, 354, 421, 450,
+        451, 452, 500, 501, 502, 503, 504, 550, 551, 552, 553, and 554. (Typically the second
+        digit is 0 for a syntax error, 1 for a human-oriented help message, 2 for a hello/goodbye
+        message, or 5 for a mail-related message.) Other codes will be misinterpreted by
+        existing clients; for example, MMDF interprets code 471 as permanent rejection.
+    </P>
+    <P>However, clients cannot take this list seriously. For example, some servers use code
+        571, in violation of RFC 821. (Apparently some people are under the delusion that
+        RFC 1893 extended the list of SMTP codes. RFC 1893 clearly states that its codes---which
+        aren't 3-digit numbers---are for use in a different context, namely DSNs.) The IETF
+        subsequently permitted codes 252 and 555, again violating RFC 821. </P>
+    <P>I recommend that clients avoid looking past the first digit of the code, either 2,
+        3, 4, or 5. The other two digits and the text are primarily for human consumption.
+        (Exception: See <A href="ehlo.html">EHLO</A>.) </P>
+    <P>A few clients are unable to handle responses longer than one line to verbs other
+        than <A href="ehlo.html">EHLO</A>, <A href="help.html">HELP</A>, and <A href="vrfy.html">
+            EXPN</A>, even though RFC 821 permits multiple-line responses under all circumstances.
+        Simeon 4.1.5 is unable to handle a multiple-line <A href="greeting.html">greeting</A>.
+        I recommend that servers use one-line responses whenever possible. </P>
+    <H2>Syntax errors</H2>
+    Servers must reject unrecognized verbs. The IETF introduced <A href="ehlo.html">EHLO</A>
+    after RFC 821 was published; it assumed that all existing servers would reject EHLO
+    requests. More names might be introduced in the future.
+    <P>Servers use code 500 or 502 to reject unrecognized verbs. </P>
+    <P>RFC 821 requires that all servers be able to handle 512-byte requests. Some servers
+        allow much longer requests; other servers reject those requests with code 500. Some
+        <A href="ehlo.html">extensions</A> require requests longer than 512 bytes. </P>
+    <H1>Greetings</H1>
+    <P>The server's initial response to the client must use <A href="request.html#response">
+        code</A> 220 or 421. </P>
+    <H2>220 greetings</H2>
+    <P>220 accepts the connection: </P>
+    220 heaven.af.mil ESMTP
+    <P>According to RFC 821, the first word of text after 220 is the ``official'' name of
+        the server host. However, not all servers follow this rule. Some servers don't even
+        have ``official'' names. </P>
+    <P>By default, most versions of sendmail do not use <A href="ehlo.html">EHLO</A> unless
+        the text after 220 contains the string ESMTP. This also means that they do not recognize
+        <A href="8bitmime.html">8BITMIME</A>. I recommend that all servers that support
+        <A href="ehlo.html">EHLO</A> include the string ESMTP in the 220 line. </P>
+    <P>There are other conventions for computer-readable text after 220. For example, recent
+        versions of sendmail look for 8BIT-OK. Under a proposed federal law, unsolicited
+        commercial email cannot be sent through a server that includes the string NO UCE
+        in the 220 line. I recommend that all future conventions along these lines use at
+        least one uppercase character, and that servers avoid using uppercase characters
+        for other purposes. </P>
+    <H2>421 greetings</H2>
+    <P>421 temporarily rejects the connection: </P>
+    421-heaven.af.mil is too busy to accept mail right now. 421 Please come back in
+    2040 seconds.
+    <P>The server closes the connection without reading any <A href="request.html#request">
+        requests</A> from the client. </P>
+    <P><A href="../smtp.html#klensin">Klensin</A> also allows code 554. In this case the
+        server reads requests from the client, responding 503 to any request other than
+        <A href="quit.html">QUIT</A>. </P>
+    <H1>How the client transfers mail</H1>
+    <P>Here is how a typical SMTP connection works. </P>
+    <P>The client has <A href="../im/responsibility.html">responsibility</A> for delivering
+        a <A href="../im/message.html">message</A> to one or more envelope recipients, or
+        notifying an envelope sender if delivery is not made. It wants to transfer this
+        responsibility to the server. </P>
+    <P>The client waits for the server's <A href="greeting.html">greeting</A>: </P>
+    220 heaven.af.mil ESMTP
+    <P>If the server does not <A href="request.html#response">accept</A> the connection,
+        the client <A href="quit.html">quits</A>. </P>
+    <P>The client then sends a <A href="helo.html#helo">HELO</A> <A herf="request.html#request">
+        request</A>, and waits for the <A herf="request.html#response">response</A>: </P>
+    HELO sun.af.mil 250 heaven.af.mil
+    <P>If the server does not accept the request, the client quits. </P>
+    <P>The client then sends a <A href="mail.html#mail">MAIL</A> request showing the envelope
+        sender address, and waits for the response: </P>
+    MAIL FROM:&lt;driver@sun.af.mil&gt; 250 ok
+    <P>If the server does not accept the request, the client quits. </P>
+    <P>The client then sends one <A href="mail.html#rcpt">RCPT</A> request for each envelope
+        recipient address, waiting for a response after each address: </P>
+    RCPT TO:&lt;God@heaven.af.mil&gt; 250 ok
+    <P>It keeps track of which addresses are accepted. If none of the addresses are accepted,
+        the client quits. </P>
+    <P>The client then sends a <A href="mail.html#data">DATA</A> request, and waits for
+        the response: </P>
+    DATA 354 go ahead
+    <P>If the server does not accept the request, the client quits. </P>
+    <P>The client then sends the <A href="message.html">encoded message</A>, waits for the
+        response, and quits: </P>
+    Date: 8 Aug 1998 04:10:45 -0000 From: driver@sun.af.mil To: God@heaven.af.mil Subject:
+    chariot is back in service I patched up the wheel. It's as good as new. . 250 ok
+    902549473 qp 24035 QUIT 221 heaven.af.mil
+    <P>If the client encounters a message I/O error, it closes the connection immediately,
+        without sending a final dot and without sending a <A href="quit.html">QUIT</A> request.
+    </P>
+    <H2>Success, failure, deferral</H2>
+    <P>For each recipient, the client decides whether responsibility was transferred to
+        the server. There are three possible results: </P>
+    <UL>
+        <LI>Success: The server accepted responsibility for this recipient. The client is no
+            longer responsible. </LI>
+        <LI>Deferral: The server temporarily rejected responsibility for this recipient. The
+            client will try again later. </LI>
+        <LI>Failure: The server permanently rejected responsibility for this recipient. The
+            client will notify the sender. </LI>
+    </UL>
+    <P>This result is determined by the first digit of the server's response <A href="request.html#response">
+        codes</A> for the connection (C), the HELO request (H), the MAIL request (M), the
+        RCPT request for this recipient (R), the DATA request (D), and the encoded message
+        (E), according to the following table: </P>
+    &nbsp; &nbsp; &nbsp; &nbsp;
+    C H M R D E 
+    <BR />
+    result --------------------&nbsp;<BR />
+    &nbsp; &nbsp; &nbsp; &nbsp; 5 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+    &nbsp; &nbsp; &nbsp; &nbsp;deferral (some clients: failure)&nbsp;<BR />
+    &nbsp; &nbsp; &nbsp; &nbsp; 4 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+    &nbsp; &nbsp; &nbsp; &nbsp;deferral&nbsp;<BR />
+    &nbsp; &nbsp; &nbsp; &nbsp; 2 5 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+    &nbsp; &nbsp; &nbsp; deferral (some clients: failure)&nbsp;<BR />
+    &nbsp; &nbsp; &nbsp; &nbsp; 2 4 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+    &nbsp; &nbsp; &nbsp; deferral&nbsp;<BR />
+    &nbsp; &nbsp; &nbsp; &nbsp; 2 2 5 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+    &nbsp; &nbsp;failure (a few clients:
+    deferral)&nbsp;<BR />
+    &nbsp; &nbsp; &nbsp; &nbsp; 2 2 4 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+    &nbsp; &nbsp;deferral&nbsp;<BR />
+    &nbsp; &nbsp; &nbsp; &nbsp; 2 2 2 5 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+    failure&nbsp;<BR />
+    &nbsp; &nbsp; &nbsp; &nbsp; 2 2 2 4 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+    deferral&nbsp;<BR />
+    &nbsp; &nbsp; &nbsp; &nbsp; 2 2 2 2 5 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;failure&nbsp;<BR />
+    &nbsp; &nbsp; &nbsp; &nbsp; 2 2 2 2 4 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;deferral&nbsp;<BR />
+    &nbsp; &nbsp; &nbsp; &nbsp; 2 2 2 2 3 5 &nbsp; &nbsp; &nbsp; &nbsp; failure&nbsp;<BR />
+    &nbsp; &nbsp; &nbsp; &nbsp; 2 2 2 2 3 4 &nbsp; &nbsp; &nbsp; &nbsp; deferral&nbsp;<BR />
+    &nbsp; &nbsp; &nbsp; &nbsp; 2 2 2 2 3 2 &nbsp; &nbsp; &nbsp; &nbsp; success
+    <H2>Closed connections and message duplication</H2>
+    <P>The connection may close while the client is waiting for a response: e.g., the server
+        may crash, or the network may fail. The client acts as if all subsequent responses
+        have codes beginning with 4. </P>
+    <P>In particular, say the client sends the dot at the end of the encoded message, the
+        server accepts the message, and the connection closes before the client receives
+        the server's response. The client does not know that the server accepted the message;
+        it will try again later. Both the client and the server now have responsibility
+        for the delivery. The recipient will end up receiving two copies of the message.
+    </P>
+    <P>To minimize the chance of this event, high-quality servers respond as quickly as
+        possible to encoded messages. </P>
+    <H2>Sending more than one message</H2>
+    <P>Sometimes a client has more than one message to transfer to the same server. Instead
+        of quitting, it can send an <A href="helo.html#rset">RSET</A> request to clear the
+        <A href="mail.html">server's envelope</A>, and then continue with a new MAIL, RCPT,
+        etc. </P>
+    <P>If the second message has the same contents and the same envelope sender as the first
+        message, the client can save time by merging the recipient lists and sending the
+        message just once. Exception: if the new recipient list is longer than the server
+        can handle, the server will end up deferring some recipients. </P>
+    <P>I recommend that clients avoid holding connections open when they do not have messages
+        to send immediately. An idle connection chews up memory on the server that could
+        be used for other tasks. </P>
+    <H1>Encoded messages</H1>
+    <P>Some <A href="../im/message.html">messages</A> cannot be expressed in SMTP. Messages
+        in SMTP cannot contain partial lines. Messages cannot contain lines with the byte
+        sequence <TT>\015\012</TT>. Clients asked to send such messages must refuse. </P>
+    <P>Here is how to encode a message. Insert a dot in front of any line that already starts
+        with a dot. Concatenate all the lines, with <TT>\015\012</TT> between each pair
+        of lines; the result ends with <TT>\015\012</TT> (unless the original message had
+        no lines), since the final line is empty. Append a dot followed by <TT>\015\012</TT>.
+    </P>
+    <P>This encoding is self-delimiting. An encoded message ends with the five-byte sequence
+        <TT>"\015\012.\015\012"</TT>, and does not contain the same sequence anywhere else.
+        (Exception: the three-byte sequence <TT>".\015\012"</TT> is an encoded message,
+        representing a zero-line message.) </P>
+    <P>For example, the string <TT>"This is a test.\015\012.... Three dots\015\012.\015\012"</TT>
+        is an encoded message. It represents the three-line text message </P>
+    This is a test. ... Three dots
+    <P>which under Windows would be stored as the string <TT>"This is a test.\015\012...
+        Three dots\015\012"</TT>. Notice that the encoded message starts with four dots
+        on the second line. </P>
+    <H2>Arbitrary limits on messages</H2>
+    <P>RFC 821 prohibits lines longer than 998 bytes, and requires that all servers be able
+        to accept 998-byte lines. In practice, users sometimes send longer lines. </P>
+    <P>RFC 1123 says that ``mailer software MUST be able to send and receive messages of
+        at least 64K bytes in length (including header), and a much larger maximum size
+        is highly desirable.'' </P>
+    <H1>Encoded addresses</H1>
+    <H2>Address restrictions</H2>
+    <P>RFC 821 puts restrictions on the <A href="../im/address.html">Internet mail addresses</A>
+        that can be expressed in SMTP. </P>
+    <P>It requires that the <A href="../im/address.html">domain part</A> of each address
+        be a sequence of elements separated by dots, where each element is either a <B>component</B>,
+        a sequence of digits preceded by <TT>#</TT>, or a dotted-decimal IP address surrounded
+        by brackets. The only allowable characters in components are letters, digits, and
+        dashes; <A href="../smtp.html#klensin">Klensin</A> specifically requires that underscores
+        be rejected. Every component must have at least one character. </P>
+    <P>In practice, servers have to be prepared to handle domains ending with dots, and
+        components containing underscores. </P>
+    <P>RFC 821 also requires that each component have at least three bytes; that the first
+        byte be a letter; and that the last byte be a letter or digit. However, these restrictions
+        are completely out of whack with reality. As far as I know, no server enforces them.
+    </P>
+    <P>RFC 821 prohibits non-ASCII characters, empty box parts, box parts longer than 64
+        bytes, and domain parts longer than 64 bytes. These requirements are occasionally
+        disobeyed in practice. </P>
+    <P>RFC 821 requires that servers be able to handle box parts as long as 64 bytes and
+        domain parts as long as 64 bytes. </P>
+    <P>The characters <TT>\0</TT> and <TT>\012</TT> are unsafe in practice. Klensin prohibits
+        all ASCII control characters. </P>
+    <H2>Routes</H2>
+    <P>An <B>at-domain</B> is an @ followed by a domain. A <B>route</B> is one or more at-domains,
+        separated by commas. For example, </P>
+    @heaven.af.mil,@uucp.local
+    <P>is a route. </P>
+    <P>Routes were heavily discouraged in RFC 1123. Their function is actively subverted
+        by most Internet mailers. Clients should not generate them. However, they still
+        show up occasionally; servers have to be able to parse the route syntax. </P>
+    <H2>Encoded box parts</H2>
+    <P>SMTP offers three ways to encode a character inside an address: </P>
+    <UL>
+        <LI>``safe'': the character, if it is not <TT>&lt;&gt;()[].,;:@</TT>, backslash, double-quote,
+            space, or an ASCII control character; </LI>
+        <LI>``quoted'': the character, if it is not <TT>\012</TT>, <TT>\015</TT>, backslash,
+            or double-quote; or </LI>
+        <LI>``slashed'': backslash followed by the character. </LI>
+    </UL>
+    <P>An <B>encoded box part</B> is either (1) a sequence of one or more slashed or safe
+        characters or (2) a double quote, a sequence of zero or more slashed or quoted characters,
+        and a double quote. It represents the concatenation of the characters encoded inside
+        it. </P>
+    <P>For example, the encoded box parts </P>
+    angels \a\n\g\e\l\s "\a\n\g\e\l\s" "angels" "ang\els"
+    <P>all represent the 6-byte string <TT>"angels"</TT>, and the encoded box parts </P>
+    a\,comma \a\,\c\o\m\m\a "a,comma"
+    <P>all represent the 7-byte string <TT>"a,comma"</TT>. </P>
+    <H2>How to create an encoded box part</H2>
+    <P>Here is some advice to clients on how to represent a string as an encoded box part.
+    </P>
+    <P>Copy the string without quoting if </P>
+    <UL>
+        <LI>it is nonempty, </LI>
+        <LI>it doesn't start with a dot, </LI>
+        <LI>it doesn't end with a dot, </LI>
+        <LI>it doesn't have adjacent dots, and </LI>
+        <LI>all of its non-dot characters are safe ASCII characters. </LI>
+    </UL>
+    <P>Otherwise, insert a backslash before each unsafe character, and surround the string
+        with quotes. </P>
+    <H2>Encoded addresses</H2>
+    <P>An <B>encoded address</B> contains </P>
+    <OL>
+        <LI>the byte <TT>&lt;</TT>; </LI>
+        <LI>optionally, a route followed by a colon; </LI>
+        <LI>an encoded box part, the byte @, and a domain; and </LI>
+        <LI>the byte <TT>&gt;</TT>. </LI>
+    </OL>
+    <P>It represents an Internet mail address, given by concatenating the string represented
+        by the encoded box part, the byte @, and the domain. </P>
+    <P>For example, the encoded addresses </P>
+    &lt;God@heaven.af.mil&gt; &lt;\God@heaven.af.mil&gt; &lt;"God"@heaven.af.mil&gt;
+    &lt;@gateway.af.mil,@uucp.local:"\G\o\d"@heaven.af.mil&gt;
+    <P>all represent the Internet mail address <TT>"God@heaven.af.mil"</TT>. Beware, however,
+        that sendmail interprets these as different addresses. </P>
+    <H2>How to read an encoded address</H2>
+    <P>Here is some advice to servers on how to parse an encoded address. </P>
+    <P>Keep track of whether you are inside quotes or outside quotes; initially you are
+        outside quotes. Skip the starting <TT>&lt;</TT>. If the next character is <TT>@</TT>,
+        skip all characters through the next colon. Now perform the following procedure:
+    </P>
+    <OL>
+        <LI>Read a character. </LI>
+        <LI>If it's a backslash: Read another character. Append that to the address. Go back
+            to step 1. </LI>
+        <LI>If it's a double quote: You are now outside/inside quotes if you were previously
+            inside/outside quotes. Go back to step 1. </LI>
+        <LI>If it's <TT>&gt;</TT> and you are outside quotes: Stop. The address is complete.
+        </LI>
+        <LI>Append this character to the address. Go back to step 1. </LI>
+    </OL>
+    <P>This allows any number of quoted pieces of the encoded address. </P>
+    <P>Beware that some clients (e.g., Neologic SMTPD, Worldgroup SMTP) incorrectly include
+        one or more spaces before each encoded address: </P>
+    RCPT TO: &lt;incorrect.spaces@heaven.af.mil&gt; (WRONG)
+    <P>Some clients (e.g., Windows CE) fail to enclose addresses in brackets: </P>
+    RCPT TO: missing.brackets@heaven.af.mil (WRONG)
+    <P>In some cases a client will omit the domain: </P>
+    RCPT TO:&lt;root&gt;
+    <H1>The MAIL, RCPT, and DATA verbs</H1>
+    The server keeps track of an <B>envelope</B> for the client.
+    <P>The envelope contains any number of <B>envelope recipient addresses</B> and at most
+        one <B>return path</B>. The envelope is <B>empty</B> when it contains no addresses.
+    </P>
+    <P>When the client connects to the server, the envelope is empty. </P>
+    <P>For example, after the following <A href="request.html#response">responses</A> and
+        <A href="request.html#request">requests</A>, the envelope contains the return path
+        <TT>djb@silverton.berkeley.edu</TT>, the recipient address <TT>God@heaven.af.mil</TT>,
+        and the recipient address <TT>angels@heaven.af.mil</TT>: </P>
+    220 heaven.af.mil ESMTP MAIL FROM:&lt;djb@silverton.berkeley.edu&gt; 250 ok RCPT
+    TO:&lt;God@heaven.af.mil&gt; 250 ok RCPT TO:&lt;devils@heaven.af.mil&gt; 550 wrong
+    address, buddy RCPT TO:&lt;angels@heaven.af.mil&gt; 250 ok
+    <H2><A name="mail"></A>The MAIL verb</H2>
+    The point of a MAIL request is to set the envelope return path and clear the list
+    of envelope recipient addresses.
+    <P>A MAIL request has a parameter containing </P>
+    <OL>
+        <LI>the string <TT>"FROM:"</TT> in any combination of uppercase and lowercase; </LI>
+        <LI>an encoded return path: either the empty string, encoded as &lt;&gt;, or an <A
+            href="address.html">encoded address</A>; and </LI>
+        <LI>extra information. </LI>
+    </OL>
+    If the server accepts the MAIL request, then the new envelope contains the return
+    path specified in MAIL, and no recipient addresses. The server is required to use
+    <A href="request.html#response">code</A> 250 here.
+    <P>If the server rejects the MAIL request, the client cannot make any assumptions about
+        the envelope. The envelope could be empty, for example, or it could be the same
+        as it was before the MAIL request. <A href="../smtp.html#klensin">Klensin</A> requires
+        that the envelope be the same, but this is not always true in practice. </P>
+    <P>Beware that many servers incorrectly reject MAIL requests when the envelope is nonempty.
+        For example, sendmail responds with code 503. </P>
+    <P>RFC 821 does not permit extra information at the end of a MAIL request. In practice,
+        however, some clients (e.g., at least one version of the Netscape SDK) put extra
+        spaces at the end of MAIL. Furthermore, extensions such as <A href="8bitmime.html">8BITMIME</A>
+        make use of the extra information. </P>
+    <P>RFC 821 lets the server use codes 421, 451, 452, 500, 501, or 552 to reject a MAIL
+        request; RFC 1869 also permits code 555. Typical examples: </P>
+    MAIL FROM:&lt;angels@heaven.af.mil&gt; blah blah blah blah blah 500 line too long
+    MAIL FROM:&lt;angels@heaven.af.mil&gt; garbage 555 garbage not permitted MAIL FROM:&gt;angels@heaven.af.mil&lt;
+    501 malformatted address MAIL FROM:&lt;took.three.hours.to.send.this@heaven.af.mil&gt;
+    451 timeout
+    <H2><A name="rcpt"></A>The RCPT verb</H2>
+    The point of a RCPT request is to add one address to the list of envelope recipient
+    addresses.
+    <P>A RCPT request has a parameter containing </P>
+    <OL>
+        <LI>the string <TT>"TO:"</TT> in any combination of uppercase and lowercase; </LI>
+        <LI>an encoded recipient address; and </LI>
+        <LI>extra information. </LI>
+    </OL>
+    If the server accepts the RCPT request, the new envelope is the same as the previous
+    envelope, plus the recipient address specified in the RCPT request. The server is
+    required to use code 250 or 251 here. 251 indicates that mail to this recipient
+    will be forwarded, and gives the new forwarding address: RCPT TO:&lt;God@heaven.af.mil&gt;
+    250 no problem RCPT TO:&lt;angels@heaven.af.mil&gt; 251 okay; will forward your
+    mail to &lt;angels@sun.af.mil&gt; Today's clients discard the text, whether the
+    code is 250 or 251, so this is not a good way to provide forwarding information.
+    Code 251 is deprecated by Klensin. I use a simple <TT>"250 ok"</TT> in all cases.
+    <P>If the server rejects the RCPT request, the envelope is unchanged. </P>
+    <P>MAIL must be used before RCPT. Servers reject RCPT requests (using code 503) when
+        the envelope is empty. </P>
+    <P>It is a violation of RFC 821 for the client to send RCPT if the envelope already
+        contains 100 recipient addresses. It is also a violation of RFC 821 for the server
+        to limit its envelope to fewer than 100 recipient addresses. Nevertheless, some
+        servers set much lower limits. </P>
+    <P>RFC 821 lets the server use codes 421, 450, 451, 452, 500, 501, 503, 550, 551, 552,
+        or 553 to reject a RCPT request; RFC 1869 also permits code 555. Typical examples
+        (out of context): </P>
+    450 mailbox busy, try again later 452 recipient out of disk space, try again later
+    452 too many recipients 503 need MAIL before RCPT 550 no such recipient here 551
+    recipient has moved; try &lt;aj@fires.af.mil&gt; 553 we don't relay mail to remote
+    addresses
+    <H2><A name="data"></A>The DATA verb</H2>
+    The point of a DATA request is to send mail.
+    <P>DATA parameters are prohibited. Some servers reject any DATA request with a nonempty
+        parameter. </P>
+    <P>MAIL and RCPT must be used before DATA. Servers reject DATA requests (using code
+        503) unless the envelope contains a return path and at least one recipient address.
+    </P>
+    <P>If the server accepts the DATA request (required code 354), the client sends an <A
+        href="message.html">encoded message</A>. </P>
+    <P>If the server accepts the message (required code 250), it is accepting <A href="../im/responsibility.html">
+        responsibility</A> for delivering the message to each of the recipient addresses
+        in the envelope, or notifying the return path (if it is nonempty) if some deliveries
+        are not made: </P>
+    MAIL FROM:&lt;God@heaven.af.mil&gt; 250 ok RCPT TO:&lt;angels@heaven.af.mil&gt;
+    250 ok DATA 354 ok Hi, guys. Just testing our new mail system. . 250 Written safely
+    to disk. #902487694.289148.12219. Many clients save this final 250 response as a
+    receipt; I recommend that the server include enough information that the local system
+    administrator can track down the message in his logs.
+    <P>If the server accepts the DATA request and the message, the new envelope is empty.
+        (Exception: A server called David reportedly leaves the envelope recipients alone
+        through both DATA and MAIL.) Otherwise the client cannot make any assumptions about
+        the envelope. </P>
+    <P>RFC 821 lets the server use codes 421, 451, 500, 501, 503, or 554 to reject a DATA
+        request. Typical examples (out of context): </P>
+    451 unable to set up internal message buffer 503 need RCPT before DATA RFC 821 lets
+    the server use codes 451, 452, 552, or 554 to reject a message. Typical examples
+    (out of context): 552 sorry, this message is too large for my disk 554 too many
+    hops, this message is looping
+    <H1>The HELO, RSET, and NOOP verbs</H1>
+    <H2><A name="helo"></A>The HELO verb</H2>
+    A HELO <A href="request.html#request">request</A> usually has a <A href="request.html#request">
+        parameter</A> showing the client's name: 220 heaven.af.mil ESMTP HELO gateway.af.mil
+    250 heaven.af.mil RFC 1123 requires that the parameter be ``a valid principal host
+    domain name for the client host.'' However, some clients don't have names. I recommend
+    that they use bracketed IP addresses: 220 heaven.af.mil ESMTP HELO [10.43.0.25]
+    250 heaven.af.mil
+    <P>If the server accepts the HELO request (required <A href="request.html#response">
+        code</A> 250), its new <A href="mail.html">envelope</A> is empty. </P>
+    <P>The server's response text begins with the server's name. The server must be careful
+        not to use another host's name here: if a sendmail client on that host connects
+        and sees its own name, it will refuse to ``talk to itself.'' </P>
+    <P>Some servers do not accept <A href="mail.html#mail">MAIL</A> requests before HELO.
+        Clients use HELO as the first request in every session. (Exception: see <A href="ehlo.html">
+            EHLO</A>.) This is a waste of time. I recommend that server implementors let
+        clients skip HELO, to support a future transition to a world without HELO. </P>
+    <P>Beware that many servers reject all HELO requests after the first, so clients cannot
+        rely on HELO as a way to clear the envelope. For example, sendmail returns a 503
+        code. </P>
+    <P>A few servers reject messages from clients whose HELO parameters do not match the
+        results of PTR lookups on their IP addresses. This behavior is a disaster in practice;
+        surveys in 1998 found that more than 10% of all clients by volume use invalid HELO
+        parameters. Compuserve reportedly uses unqualified names: </P>
+    HELO NIH2WAAF RFC 1123 prohibits HELO-based rejections.
+    <H2><A name="rset"></A>The RSET verb</H2>
+    The point of RSET is to clear the server's envelope. If the server accepts RSET
+    (required code 250), the new envelope is empty.
+    <P>RSET parameters are prohibited. Some servers reject any RSET request with a nonempty
+        parameter. I don't know if there are any clients that send RSET with an empty parameter,
+        i.e., RSET followed by a space. </P>
+    <P><A name="rset-extension"></A>There is a useless RSET <A href="ehlo.html">extension</A>
+        that promises support for RSET. Servers are required to support RSET anyway. Clients
+        don't pay attention to the RSET extension. </P>
+    <P>&nbsp;</P>
+    <H2><A name="noop"></A>The NOOP verb</H2>
+    NOOP does nothing other than elicit a response from the server. A typical server
+    accepts NOOP (required code 250). No matter what the server's response is, the envelope
+    remains unchanged.
+    <P>NOOP parameters are prohibited. Some servers reject any NOOP request with a nonempty
+        parameter. </P>
+    <P>&nbsp;</P>
+    <H1>The QUIT verb</H1>
+    <P>A QUIT <A href="request.html#request">request</A> asks the server to close the connection:
+    </P>
+    220 heaven.af.mil ESMTP QUIT 221 heaven.af.mil saying goodbye
+    <P>QUIT <A href="request.html#request">parameters</A> are prohibited. Some servers will
+        reject any QUIT request with a nonempty parameter. </P>
+    <P>If the server accepts the QUIT request (required <A href="request.html#response">
+        code</A> 221), it then closes the connection without reading further requests. </P>
+    <H2>Clients closing connections</H2>
+    <P>RFC 821 recommends that the client send QUIT, and wait for the QUIT response, before
+        closing the connection. </P>
+    <P>There are a few broken TCP implementations, such as MacTCP 2.0.6, that fail to acknowledge
+        TCP FINs after a local close. If the client is running on such a host, it shouldn't
+        close the connection until it sees the server close the connection; otherwise the
+        server will waste time repeatedly transmitting the FIN until it times out. </P>
+    <P>Clients will close connections without QUIT in some circumstances, for example because
+        of a crash, or a message I/O error or timeout after <A href="mail.html#data">DATA</A>.
+        Servers must not throw away messages that they <A href="mail.html#data">accepted</A>
+        during such connections. (Banyan Vines in 1994 reportedly violated this rule.) </P>
+    <P>Most implementors agree that QUIT is useless, and support a transition to a world
+        without QUIT. Some servers pester their system administrators when they don't see
+        QUIT; I recommend that they change this behavior. Someday clients will no longer
+        send QUIT. Eventually servers will no longer need to support QUIT. </P>
+    <P>qmail's SMTP client sends QUIT but does not wait for the QUIT response. </P>
+    <H2>Servers closing connections</H2>
+    <P>RFC 821 recommends that the server not close the connection until it receives a QUIT
+        request and sends the response. </P>
+    <P>Servers close connections without QUIT in some circumstances, for example because
+        of a crash or timeout. Some servers send an asynchronous response before closing
+        the connection after a timeout. The correct code here is 451, temporarily rejecting
+        the client's next request; some servers incorrectly use 552 or 554, producing sporadic
+        bounces. </P>
+    <H2>Timeouts</H2>
+    <P>The client should not wait forever for a response from the server; the server may
+        have crashed. Similarly, the server should not wait forever for a response from
+        the client. </P>
+    <P>I use a default timeout of 1200 seconds for each packet. Timeouts below 600 seconds
+        are dangerous in today's Internet. On the other hand, some <A href="../im/remote.html#dumbclient">
+            dumb clients</A> wait only 60 seconds for a <A href="greeting.html">greeting</A>.
+    </P>
+    <P>RFC 1123 suggests different minimum timeouts for different requests, ranging from
+        a 120-second timeout for the DATA response to a 600-second timeout for the response
+        to the message itself. Measurements show that this sort of tweaking does not make
+        a significant difference in average resource consumption. </P>
+    <H1>The EHLO verb and SMTP extensions</H1>
+    <P>EHLO is just like <A href="helo.html#helo">HELO</A> except that the server's response
+        text provides computer-readable information about the server's abilities. </P>
+    <P>Here is what happens if the server accepts EHLO (required <A href="request.html#response">
+        code</A> 250). On the first response line, the text begins with the server's name.
+        On each response line past the first, the text is an <B>extension</B>, followed
+        optionally by a space and an argument, followed optionally by a space and another
+        argument, etc. </P>
+    <P>The extension is a nonempty string of letters, digits, and hyphens. Each argument
+        is a nonempty string of graphical ASCII characters. </P>
+    <P>A rather extreme example: </P>
+    <PRE>
+     220 size.does.matter.af.MIL (More ESMTP than Crappysoft!)
+     EHLO heaven.af.mil
+     250-size.does.matter.af.MIL offers FIFTEEN extensions:
+     250-8BITMIME
+     250-PIPELINING
+     250-DSN
+     250-ENHANCEDSTATUSCODES
+     250-EXPN
+     250-HELP
+     250-SAML
+     250-SEND
+     250-SOML
+     250-TURN
+     250-XADR
+     250-XSTA
+     250-ETRN
+     250-XGEN
+     250 SIZE 51200000
+</PRE>
+    <P>The last extension here is SIZE, with argument 51200000; the other extensions do
+        not have arguments. </P>
+    <H2>Extension semantics</H2>
+    <P>RFC 1869 prohibits all extensions except (1) extensions defined by the IETF and (2)
+        extensions beginning with the letter X. However, some servers use private extensions
+        that do not begin with the letter X. In any case, clients must be prepared for unrecognized
+        extensions; the IETF may define new extensions at any time. </P>
+    <P>Extensions generally apply to a single connection. If the client reconnects to the
+        same host a minute later, it may find a completely different list of extensions.
+    </P>
+    <P>Extensions are supposed to be interpreted without regard to case. In practice extensions
+        are always sent in uppercase. I don't know if there are clients that have trouble
+        with lowercase. </P>
+    <H2><A name="using-ehlo"></A>Using EHLO</H2>
+    <P>If the server supports EHLO, the client can use EHLO instead of HELO as its first
+        request. (Note that sendmail's decision of whether to use HELO or EHLO depends on
+        the server's <A href="greeting.html">greeting</A>.) </P>
+    <P>On the other hand, if the server does not support EHLO, and the client sends EHLO,
+        the server will reject EHLO. The client then has to fall back to HELO. </P>
+    <P>There are a few servers that disconnect when they see EHLO. If the client finds that
+        neither EHLO nor HELO was accepted, for example because the connection was closed,
+        then it has to make a new connection and start with HELO. </P>
+    <H2>Extension name index</H2>
+    <P>The following list shows all the extensions that I've seen from SMTP servers. </P>
+    <HR />
+    <P><A href="8bitmime.html">8BITMIME</A>
+        <BR />
+        ATRN
+        <BR />
+        AUTH
+        <BR />
+        AUTH=LOGIN
+        <BR />
+        BINARYMIME
+        <BR />
+        CHECKPOINT
+        <BR />
+        CHUNKING
+        <BR />
+        DSN
+        <BR />
+        ENHANCEDSTATUSCODES
+        <BR />
+        ENHANGEDSTATUSCODES [sic]
+        <BR />
+        <A href="turn.html#etrn-extension">ETRN</A>
+        <BR />
+        <A href="vrfy.html#expn-extension">EXPN</A>
+        <BR />
+        <A href="help.html#help-extension">HELP</A>
+        <BR />
+        ONEX
+        <BR />
+        <A href="pipelining.html">PIPELINING</A>
+        <BR />
+        <A href="helo.html#rset-extension">RSET</A>
+        <BR />
+        <A href="send.html">SAML</A>
+        <BR />
+        <A href="send.html">SEND</A>
+        <BR />
+        <A href="size.html">SIZE</A>
+        <BR />
+        <A href="send.html">SOML</A>
+        <BR />
+        TIME
+        <BR />
+        TLS
+        <BR />
+        <A href="turn.html#turn-extension">TURN</A>
+        <BR />
+        VERB
+        <BR />
+        <A href="vrfy.html#vrfy-extension">VRFY</A>
+        <BR />
+        X-EXPS
+        <BR />
+        X-EXPS=LOGIN
+        <BR />
+        X-LINK2STATE
+        <BR />
+        X-RCPTLIMIT
+        <BR />
+        X-TURNME
+        <BR />
+        XADR
+        <BR />
+        XAUD
+        <BR />
+        XDSN
+        <BR />
+        XEXCH50
+        <BR />
+        XGEN
+        <BR />
+        XONE
+        <BR />
+        XQUE
+        <BR />
+        XREMOTEQUEUE
+        <BR />
+        XSTA
+        <BR />
+        XTRN
+        <BR />
+        XUSR
+        <BR />
+        XVRB </P>
+    <HR />
+    <P>Thanks to Peter Bieringer for reports. </P>
+    <H1>The PIPELINING extension</H1>
+    <P>PIPELINING was introduced in RFC 1854, published in 1995. RFC 1854 was replaced by
+        RFC 2197, published in 1997. </P>
+    <P>The PIPELINING <A href="ehlo.html">extension</A> means that, during this connection,
+        the client does not always need to wait for a <A href="request.html#response">response</A>
+        before sending the next <A href="request.html#request">request</A>. </P>
+    <P>Specifically, the client does not need to wait for the response to <A href="helo.html#rset">
+        RSET</A>, <A href="mail.html#mail">MAIL</A>, <A href="mail.html#rcpt">RCPT</A>,
+        or an <A href="message.html">encoded message</A>. </P>
+    <P>Furthermore, the server is permitted to defer such responses as long as it is continuing
+        to receive new requests from the client. (Of course, this situation does not occur
+        unless the client knows about PIPELINING.) The server must never wait for client
+        input unless it has first ``flushed'' all pending responses; and it must send responses
+        in the correct order. </P>
+    <P>It is the client's responsibility to avoid deadlock. </P>
+    <H1>The 8BITMIME extension</H1>
+    <P>Users send billions of 8-bit messages every year. As far as I know, all servers can
+        handle 8-bit messages. A few years ago I was able to find a few hosts running ancient
+        7-bit versions of sendmail, but I don't see any now. </P>
+    <P>Most clients will send 8-bit messages upon request. This is the behavior of qmail,
+        for example, and exim, and sendmail, starting from version 6.57 in 1993. </P>
+    <P>Exception: sendmail, starting from version 8.7 in 1995, applies <B>Q-P conversion</B>
+        to an 8-bit message <I>if</I> the message contains MIME header fields, the 8 flag
+        (popular in Europe but not the default) is not set, and the SMTP server has not
+        taken the protective measures described below. </P>
+    <P>Q-P conversion has mixed results. It eliminates message corruption in the rare case
+        that the server is a 7-bit server and the recipient's mailer supports MIME. However,
+        it creates new message corruption in the much more common case that the server is
+        an 8-bit server and the recipient's mailer does not support MIME. </P>
+    <P>The 8BITMIME <A href="ehlo.html">extension</A> has two effects in practice: </P>
+    <UL>
+        <LI>The client will avoid Q-P conversion. </LI>
+        <LI>The client may add extra information at the end of a <A href="mail.html#mail">MAIL</A>
+            request: a space followed by either "BODY=7BIT" or "BODY=8BITMIME". </LI>
+    </UL>
+    <H2>Recommendations for 8-bit support</H2>
+    <P>7-bit mailers are obsolete. Do not attempt to deploy a 7-bit mailer on the Internet.
+        The fact that you are complying with IETF standards is irrelevant; <I>users</I>
+        will not tolerate a 7-bit mailer. </P>
+    <P>Do not implement Q-P conversion in an SMTP client. You will find that simply sending
+        an 8-bit message is much more successful than attempting Q-P conversion, whether
+        or not the server announces 8BITMIME. </P>
+    <P>Announce 8BITMIME in your server, to prevent Q-P conversion from sendmail without
+        the 8 flag. Ignore the BODY information. </P>
+    <H2>The 8BITMIME fantasy network</H2>
+    <P>8BITMIME was introduced in RFC 1425, published in 1993. RFC 1425 was replaced by
+        RFC 1652, published in 1994. </P>
+    <P>The view of 8BITMIME in those documents is very different from the practical view
+        explained above. It is perhaps best captured by the following absurd comment from
+        Mark Crispin: ``7-bit MTA's will never go away. Ever. Mail goes on many paths besides
+        IP, some of which are forever 7-bits. You will always have to solve the problem
+        of getting your 8-bit mail into 7-bits for some 7-bit MTA.'' </P>
+    <P>RFC 821 envisioned a network of 7-bit hosts; it prohibited 8-bit messages. RFC 1652
+        envisioned building a new network of 8-bit hosts, identified by the 8BITMIME extension,
+        with a guarantee that 8-bit messages would never be sent to 7-bit hosts. Each machine
+        inside the network would promise to apply Q-P conversion to any 8-bit message leaving
+        the network. Within the network, 8-bit messages would be transmitted without change.
+    </P>
+    <P>In fact, this network has been subverted by thousands of hosts that announce 8BITMIME
+        but that never do Q-P conversion: e.g., qmail, or sendmail with the 8 flag set.
+    </P>
+    <H1>The SIZE extension</H1>
+    <P>SIZE was introduced in RFC 1427, published in 1993. RFC 1427 was replaced by RFC
+        1653, published in 1994, and then RFC 1870, published in 1995. </P>
+    <P>The SIZE <A href="ehlo.html">extension</A> has two purposes: </P>
+    <UL>
+        <LI>To give the server an estimate of the size of a message before the message is transmitted.
+        </LI>
+        <LI>To warn the client that messages above a certain size will not be accepted. </LI>
+    </UL>
+    <P>The claimed benefit is an occasional large reduction in SMTP traffic. Beware, however,
+        that using SIZE also means a persistent small expansion in SMTP traffic. Measurements
+        at several hosts have found that the expansion outweighs the reduction. </P>
+    <P>The SIZE extension has at most one <A href="ehlo.html">argument</A>. If the argument
+        is supplied, it consists entirely of ASCII digits, giving a number <I>n</I>. If
+        <I>n</I> is nonzero, the server is indicating that it will reject messages containing
+        more than <I>n</I> bytes (counting two bytes per line for <TT>\015\012</TT>). </P>
+    <P>Whether or not an argument is supplied, the SIZE extension has the following meaning.
+        During this connection, the client may send the following string, between 7 and
+        26 characters, as extra information at the end of a <A href="mail.html#mail">MAIL</A>
+        request: </P>
+    <OL>
+        <LI>a space; </LI>
+        <LI>the word SIZE; </LI>
+        <LI>an equals sign; </LI>
+        <LI>between 1 and 20 ASCII digits, giving a number. </LI>
+    </OL>
+    <P>The number is an <I>estimate</I>, usually but not necessarily an overestimate, of
+        the total number of bytes in the message. </P>
+    <H1>The HELP verb</H1>
+    <P>A HELP <A href="request.html#request">request</A> asks for information from the server.
+        It may include a <A href="request.html#request">parameter</A>. The meaning of the
+        parameter is defined by the server. </P>
+    <P>The server must use <A href="request.html#response">code</A> 211 or 214 if it accepts
+        the request, 421, 500, 501, 502, or 504 if it rejects the request: </P>
+    <PRE>
+     220 heaven.af.mil ESMTP
+     HELP
+     214-SMTP servers help those who help themselves.
+     214 Go read http://cr.yp.to/smtp.html.
+     HELP PLEASE
+     504 I don't support HELP parameters.
+</PRE>
+    <P>The server's <A href="mail.html">envelope</A> is unchanged by HELP. </P>
+    <P><A name="help-extension"></A>There is a HELP <A href="ehlo.html">extension</A> that
+        promises support for the HELP verb. Many servers support HELP but don't announce
+        the HELP extension. Clients don't pay attention to the HELP extension; they simply
+        try the HELP request. </P>
+    <H1>The VRFY and EXPN verbs</H1>
+    <P>VRFY and EXPN ask the server for information about an address. They are inherently
+        unusable through firewalls, gateways, mail exchangers for part-time hosts, etc.
+        I suggest that, if you really want to publish this type of information, you use
+        a mechanism that legitimate users actually know about, such as Finger or HTTP. </P>
+    <H2><A name="vrfy"></A>The VRFY verb</H2>
+    <P>A VRFY <A href="request.html#request">request</A> asks the server to verify an address.
+        Its <A href="request.html#request">parameter</A> may be an <A href="address.html">encoded
+            address</A> or a user name in a server-defined format. </P>
+    <P>If the server accepts the request (required <A href="request.html#response">code</A>
+        250, 251, or 252), it may provide information about the address in a server-defined
+        format. 250 typically means that the address is valid, 251 typically means that
+        mail to the address is forwarded, and 252 means that the server doesn't know whether
+        the address is valid. </P>
+    <P>The server's <A href="mail.html">envelope</A> is unchanged by VRFY. </P>
+    <P>For example: </P>
+    <PRE>
+     VRFY jones
+     250 jones@heaven.af.mil
+     VRFY smith
+     250 Locksmith &lt;pick@heaven.af.mil&gt;
+</PRE>
+    <P><A href="../smtp.html#klensin">Klensin</A> requires that any 250 response to VRFY
+        have one of the above formats. However, many other formats are used in practice.
+    </P>
+    <P>I recommend always accepting VRFY with code 252 and generic text: </P>
+    <PRE>
+     VRFY &lt;spamvictim@heaven.af.mil&gt;
+     252 send some mail, i'll try my best
+</PRE>
+    <P>Rejecting VRFY is dangerous, since a few clients do VRFY before <A href="mail.html#rcpt">
+        RCPT</A> and do not send mail if VRFY is rejected. </P>
+    <P><A name="vrfy-extension"></A>There is a VRFY <A href="ehlo.html">extension</A> that
+        promises support for the VRFY verb. Many servers support VRFY but don't announce
+        the VRFY extension. Clients don't pay attention to the VRFY extension; they simply
+        try the VRFY request. </P>
+    <H2><A name="expn"></A>The EXPN verb</H2>
+    <P>EXPN asks the server for the membership of a mailing list. Its parameter may be an
+        <A href="address.html">encoded address</A> or a list name in a server-defined format.
+    </P>
+    <P>If the server accepts the request (required code 250), its response text shows each
+        subscriber to the mailing list, one per line, in a server-defined format. </P>
+    <P>The server's envelope is unchanged by EXPN. </P>
+    <P>The concept of a ``mailing list'' is defined by the server. Some servers treat a
+        local user as a ``mailing list'' with one subscriber, so that EXPN subsumes VRFY.
+        Others do not. </P>
+    <P>I do not recommend implementing EXPN. RFC 1123 says that EXPN is useful for ``diagnosing
+        inadvertent mail loops.'' This is obsolete; modern mailing lists stop loops automatically.
+        The primary use of EXPN today is by spammers collecting addresses. </P>
+    <P><A name="expn-extension"></A>There is an EXPN extension that promises support for
+        the EXPN verb. Many servers support EXPN but don't announce the EXPN extension.
+        Clients don't pay attention to the EXPN extension; they simply try the EXPN request.
+    </P>
+    <H1>The SEND, SAML, and SOML verbs</H1>
+    <P>SEND, SAML, and SOML are just like <A href="mail.html#mail">MAIL</A>. The only difference
+        is that </P>
+    <UL>
+        <LI>MAIL requests delivery to the recipient's mailbox; </LI>
+        <LI>SEND requests delivery to the recipient's ``terminal''; </LI>
+        <LI>SOML (``send or mail'') requests delivery to the ``terminal'' if that is available,
+            otherwise the mailbox; </LI>
+        <LI>SAML (``send and mail'') requests delivery to the ``terminal'' if that is available
+            and to the mailbox. </LI>
+    </UL>
+    <P>This profusion of verbs serves no purpose; the concept of a mailbox is already broad
+        enough to include any type of delivery that the recipient wants to set up. SEND,
+        SOML, and SAML are rarely implemented in practice. </P>
+    <H1>The TURN and ETRN verbs</H1>
+    <P>TURN and ETRN are aimed at the following situation. Mail for a part-time host, such
+        as a home computer that dials in occasionally through a modem, is waiting in the
+        queue on a full-time host. The part-time host connects. How does it retrieve its
+        mail? </P>
+    <P>One answer is for the full-time host to make an SMTP connection to the part-time
+        host. The part-time host merely needs to wake up the full-time host, for example
+        by connecting to it through Finger or Hello or SMTP or FTP. </P>
+    <P>TURN and ETRN follow this general approach but add extra complexity to the ``connecting''
+        part. </P>
+    <H2>The TURN verb</H2>
+    <P>The idea of TURN is that the part-time host makes an SMTP connection to the full-time
+        host and then sends TURN. If the server accepts TURN (required code 250), the client
+        and server exchange roles; the part-time host now becomes the server, and the full-time
+        host now becomes the client. The part-time host sends a <A href="greeting.html">greeting</A>;
+        the full-time host starts sending mail. </P>
+    <P>Today's servers reject TURN for security reasons. If the part-time host is a multiuser
+        system, any user can easily connect to the full-time host and type TURN. Far fewer
+        people know how to steal mail when the full-time host makes the connection. </P>
+    <P><A name="turn-extension"></A>There is a TURN <A href="ehlo.html">extension</A> that
+        promises support for the TURN verb. </P>
+    <H2>The ETRN verb</H2>
+    <P>ETRN was introduced in RFC 1985, published in 1996. </P>
+    <P>The <A href="request.html#request">parameter</A> to an ETRN <A href="request.html#request">
+        request</A> is normally a domain name. </P>
+    <P>If the server accepts the request, it will schedule deliveries to that domain for
+        the next convenient moment. Note that this does not guarantee any particular time.
+        The server can use code 250, 251, 252, or 253. 251 guarantees that there are no
+        deliveries waiting for the domain. 252 and 253 guarantee that there are deliveries
+        waiting. </P>
+    <P>The parameter may instead be a domain name preceded by an @; this refers to the domain
+        and all its subdomains. Or the parameter may start with an #; in this case the interpretation
+        is server-defined. </P>
+    <P><A name="etrn-extension"></A>There is an ETRN extension, with no <A href="ehlo.html">
+        arguments</A> allowed, that promises support for the ETRN verb. I don't know whether
+        ETRN-using clients pay attention to this extension. </P>
+    <P>&nbsp;</P>
+    <P>&nbsp;</P>
+</BODY>
+</HTML>

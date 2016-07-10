@@ -1,0 +1,202 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7E705E35-A9FE-4441-9172-E7964AEF95FB}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Sniffer.Server</RootNamespace>
+    <AssemblyName>Sniffer.Server.V45</AssemblyName>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>sniffer.snk</AssemblyOriginatorKeyFile>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="OdinSoft.EXT.Data.MySQL.V45">
+      <HintPath>..\..\..\..\..\odinsoft-git\ubsvc3\sdk\output\V4.5.2016.02\Debug\OdinSoft.EXT.Data.MySQL.V45.dll</HintPath>
+    </Reference>
+    <Reference Include="OdinSoft.EXT.Data.NpgSQL.V45">
+      <HintPath>..\..\..\..\..\odinsoft-git\ubsvc3\sdk\output\V4.5.2016.02\Debug\OdinSoft.EXT.Data.NpgSQL.V45.dll</HintPath>
+    </Reference>
+    <Reference Include="OdinSoft.LIB.Configuration.V45">
+      <HintPath>..\..\..\..\..\odinsoft-git\ubsvc3\sdk\output\V4.5.2016.02\Debug\OdinSoft.LIB.Configuration.V45.dll</HintPath>
+    </Reference>
+    <Reference Include="OdinSoft.LIB.Data.V45">
+      <HintPath>..\..\..\..\..\odinsoft-git\ubsvc3\sdk\output\V4.5.2016.02\Debug\OdinSoft.LIB.Data.V45.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="PmsInstaller.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PmsInstaller.Designer.cs">
+      <DependentUpon>PmsInstaller.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PmsService.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PmsService.Designer.cs">
+      <DependentUpon>PmsService.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="PmsInstaller.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>PmsInstaller.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PmsService.resx">
+      <DependentUpon>PmsService.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="sniffer.reg" />
+    <None Include="sniffer.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="engine\" />
+    <Folder Include="server\" />
+    <Folder Include="service\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\proxy\cpacket\cpacket.csproj">
+      <Project>{cfcc3cf8-2344-40fa-907d-eeae2b261c7d}</Project>
+      <Name>cpacket</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\proxy\mail\mail.csproj">
+      <Project>{56332d67-3de6-4735-b41d-97788d0823b8}</Project>
+      <Name>mail</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\proxy\msn\msn.csproj">
+      <Project>{55d6d51b-b9df-46bb-ab6d-6fea7d2e764e}</Project>
+      <Name>msn</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>:begin
+
+SET framebiz_path=$(SolutionDir)\output\V4.5.2013.10\$(ConfigurationName)
+if not exist %25framebiz_path%25 mkdir %25framebiz_path%25
+goto :target_copy
+
+:target_copy
+copy /Y $(TargetPath) %25framebiz_path%25
+if exist $(TargetPath).config copy /Y $(TargetPath).config %25framebiz_path%25
+if exist $(TargetName).xml copy /Y $(TargetName).xml %25framebiz_path%25
+goto :refence_copy
+
+:refence_copy
+if not $(TargetExt)==.exe goto end
+if not exist *.dll goto end
+copy /Y $(TargetDir)\*.dll %25framebiz_path%25
+goto end
+
+:end</PostBuildEvent>
+  </PropertyGroup>
+</Project>

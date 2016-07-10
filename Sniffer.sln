@@ -1,0 +1,66 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "main", "src\client\main\main.csproj", "{AFEB3531-2001-463C-AA7A-956DD82A9E16}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cpacket", "src\proxy\cpacket\cpacket.csproj", "{CFCC3CF8-2344-40FA-907D-EEAE2B261C7D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "msn", "src\proxy\msn\msn.csproj", "{55D6D51B-B9DF-46BB-AB6D-6FEA7D2E764E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mail", "src\proxy\mail\mail.csproj", "{56332D67-3DE6-4735-B41D-97788D0823B8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sniffer", "src\server\sniffer\sniffer.csproj", "{7E705E35-A9FE-4441-9172-E7964AEF95FB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "viewer", "src\client\viewer\viewer.csproj", "{83D4F29B-452E-4E17-8B4F-75A0C11DDB07}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "server", "server", "{E6E3271D-EA2B-4C4A-9B05-6DC8DF35FD25}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "client", "client", "{0E948887-1B28-4809-A96F-C53359EA7E4B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "proxy", "proxy", "{73B655A9-7C03-462F-AFFE-45757BE66AD3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AFEB3531-2001-463C-AA7A-956DD82A9E16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFEB3531-2001-463C-AA7A-956DD82A9E16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFEB3531-2001-463C-AA7A-956DD82A9E16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFEB3531-2001-463C-AA7A-956DD82A9E16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFCC3CF8-2344-40FA-907D-EEAE2B261C7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFCC3CF8-2344-40FA-907D-EEAE2B261C7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFCC3CF8-2344-40FA-907D-EEAE2B261C7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFCC3CF8-2344-40FA-907D-EEAE2B261C7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55D6D51B-B9DF-46BB-AB6D-6FEA7D2E764E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55D6D51B-B9DF-46BB-AB6D-6FEA7D2E764E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55D6D51B-B9DF-46BB-AB6D-6FEA7D2E764E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55D6D51B-B9DF-46BB-AB6D-6FEA7D2E764E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56332D67-3DE6-4735-B41D-97788D0823B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56332D67-3DE6-4735-B41D-97788D0823B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56332D67-3DE6-4735-B41D-97788D0823B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56332D67-3DE6-4735-B41D-97788D0823B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E705E35-A9FE-4441-9172-E7964AEF95FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E705E35-A9FE-4441-9172-E7964AEF95FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E705E35-A9FE-4441-9172-E7964AEF95FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E705E35-A9FE-4441-9172-E7964AEF95FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83D4F29B-452E-4E17-8B4F-75A0C11DDB07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83D4F29B-452E-4E17-8B4F-75A0C11DDB07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83D4F29B-452E-4E17-8B4F-75A0C11DDB07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83D4F29B-452E-4E17-8B4F-75A0C11DDB07}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{AFEB3531-2001-463C-AA7A-956DD82A9E16} = {0E948887-1B28-4809-A96F-C53359EA7E4B}
+		{CFCC3CF8-2344-40FA-907D-EEAE2B261C7D} = {73B655A9-7C03-462F-AFFE-45757BE66AD3}
+		{55D6D51B-B9DF-46BB-AB6D-6FEA7D2E764E} = {73B655A9-7C03-462F-AFFE-45757BE66AD3}
+		{56332D67-3DE6-4735-B41D-97788D0823B8} = {73B655A9-7C03-462F-AFFE-45757BE66AD3}
+		{7E705E35-A9FE-4441-9172-E7964AEF95FB} = {E6E3271D-EA2B-4C4A-9B05-6DC8DF35FD25}
+		{83D4F29B-452E-4E17-8B4F-75A0C11DDB07} = {0E948887-1B28-4809-A96F-C53359EA7E4B}
+	EndGlobalSection
+EndGlobal

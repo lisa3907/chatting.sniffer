@@ -1,0 +1,5 @@
+1) 첨부파일 Capture가 완벽 하지 않음
+2) MailViewer Title 없음 -> Windows에 나타나지 않음
+3) 정리시 backGroundWorker 사용
+4) ChatViewer SMS Capture기능 추가
+5) ESMTP error Code 421처리

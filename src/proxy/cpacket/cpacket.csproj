@@ -1,0 +1,176 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{CFCC3CF8-2344-40FA-907D-EEAE2B261C7D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Sniffer.Proxy.CPacket</RootNamespace>
+    <AssemblyName>Sniffer.Proxy.CPacket.V45</AssemblyName>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>Socket.snk</AssemblyOriginatorKeyFile>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="OdinSoft.LIB.Communication.V45">
+      <HintPath>..\..\..\..\..\odinsoft-git\ubsvc3\sdk\output\V4.5.2016.02\Debug\OdinSoft.LIB.Communication.V45.dll</HintPath>
+    </Reference>
+    <Reference Include="OdinSoft.LIB.Configuration.V45">
+      <HintPath>..\..\..\..\..\odinsoft-git\ubsvc3\sdk\output\V4.5.2016.02\Debug\OdinSoft.LIB.Configuration.V45.dll</HintPath>
+    </Reference>
+    <Reference Include="OdinSoft.LIB.Security.V45">
+      <HintPath>..\..\..\..\..\odinsoft-git\ubsvc3\sdk\output\V4.5.2016.02\Debug\OdinSoft.LIB.Security.V45.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="packet_internet.cs" />
+    <Compile Include="packet_parse.cs" />
+    <Compile Include="packet_string.cs" />
+    <Compile Include="packet_tcp.cs" />
+    <Compile Include="packet_thread.cs" />
+    <Compile Include="packet_worker.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="packet_ethernet.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="KEY_V0607121.snk" />
+    <EmbeddedResource Include="NDX_V0607121.snk" />
+    <None Include="documents\catalyst_3550.pdf" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Socket.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="documents\43580.gif" />
+    <Content Include="documents\74727.gif" />
+    <Content Include="documents\Catalyst_3550_Quick_Install.htm" />
+    <Content Include="documents\Configuring SPAN.htm" />
+    <Content Include="documents\ConnectTerminal.htm" />
+    <Content Include="documents\FixedConfiguration.htm" />
+    <Content Include="documents\note3.gif" />
+    <Content Include="documents\PasswordRecovery.htm" />
+    <Content Include="documents\TroubleShooting.htm" />
+    <Content Include="documents\PasswordRecovery_2.htm" />
+    <Content Include="documents\catalyst_2950_analyzer.htm" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>:begin
+
+SET framebiz_path=$(SolutionDir)\output\V4.5.2013.10\$(ConfigurationName)
+if not exist %25framebiz_path%25 mkdir %25framebiz_path%25
+goto :target_copy
+
+:target_copy
+copy /Y $(TargetPath) %25framebiz_path%25
+if exist $(TargetPath).config copy /Y $(TargetPath).config %25framebiz_path%25
+if exist $(TargetName).xml copy /Y $(TargetName).xml %25framebiz_path%25
+goto :refence_copy
+
+:refence_copy
+if not $(TargetExt)==.exe goto end
+if not exist *.dll goto end
+copy /Y $(TargetDir)\*.dll %25framebiz_path%25
+goto end
+
+:end</PostBuildEvent>
+  </PropertyGroup>
+</Project>

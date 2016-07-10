@@ -1,0 +1,390 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+	<head>
+		<title></title>
+	    <style type="text/css">
+
+.content {
+	FONT-WEIGHT: normal; FONT-SIZE: 12px; COLOR: #000000; FONT-FAMILY: Tahoma, Arial,Helvetica,sans-serif; TEXT-DECORATION: none
+}
+h1 {
+	FONT-WEIGHT: bold;
+	FONT-SIZE: 12pt;
+	COLOR: #666666;
+	FONT-FAMILY: Tahoma, Arial, Helvetica, sans-serif;
+	TEXT-DECORATION: none;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+P {
+	FONT-WEIGHT: normal;
+	FONT-SIZE: 12px;
+	COLOR: #000000;
+	FONT-FAMILY: Tahoma, Arial,Helvetica,sans-serif;
+	TEXT-DECORATION: none;
+	margin-top: 5px;
+}
+B {
+	FONT-WEIGHT: bold
+}
+        
+body, div, li, td, table, input { font-size:13px; font-family:SDWebManitto, 援대┝, gulim, verdana, sans-serif; color:#333; line-height:1.3; }
+
+h1, h2, h3, h4, h5 { font-size:13px; }
+
+a:link, a:visited, a:active { font-size:13px; font-family:SDWebManitto, 援대┝, gulim, verdana, sans-serif; color:#333; text-decoration:none; }
+            .style1
+            {
+                background-color: #FFFFFF;
+            }
+            .style2
+            {
+                font-weight: bold;
+                background-color: #FFFFFF;
+            }
+            .style3
+            {
+                color: #000066;
+            }
+            .style4
+            {
+                color: #000066;
+                background-color: #FFFFFF;
+            }
+        </style>
+	</head>
+	<body>
+        <div class="view" style="FONT-SIZE: 9pt; COLOR: #e0e0e0; FONT-FAMILY: 돋움">
+            <h2>
+            </h2>
+            <p>
+                <span style="FONT-SIZE: 10pt"><span style="FONT-SIZE: 12pt">
+                <font color="#ef007c">The Switched Port Analyzer (SPAN) feature</font></span>, 
+                which is sometimes called <font color="#ffaa00">port mirroring </font>or
+                <font color="#ffaa00">port monitoring</font>, selects network traffic for 
+                analysis by a network analyzer. The network analyzer can be a Cisco SwitchProbe 
+                device or other Remote Monitoring (RMON) probe. Previously, SPAN was a 
+                relatively basic feature on the Cisco Catalyst Series switches. However, the 
+                latest releases of the Catalyst OS (CatOS) introduced great enhancements and 
+                many new possibilities that are now available to the user. This document is not 
+                intended to be an alternate configuration guide for the SPAN feature. Rather, 
+                this document is an introduction to the recent features of SPAN that have been 
+                implemented. This document answers the most common questions about SPAN, such 
+                as:</span></p>
+            <h2>
+            </h2>
+            <h2>
+                &nbsp;</h2>
+            <h2>
+                <a class="con_link" name="topic5" style="COLOR: #e0e0e0" target="_blank">SPAN on 
+                the Catalyst 2940, 2950, 2955, 2960, 2970, 3550, 3560, 3560-E, 3750 and 3750-E 
+                Series Switches</a>
+            </h2>
+            <p>
+                &nbsp;</p>
+            <p>
+                &nbsp;</p>
+            <p>
+                These are guidelines for the configuration of the SPAN feature on the Catalyst 
+                2940, 2950, 2955, 2960, 2970, 3550, 3560, 3560-E, 3750, and 3750-E Series 
+                Switches:</p>
+            <ul>
+                <li style="COLOR: #e0e0e0">
+                    <p>
+                        The Catalyst 2950 Switches can have only one SPAN session active at a time and 
+                        can monitor only source ports. These switches cannot monitor VLANs.</p>
+                </li>
+                <li style="COLOR: #e0e0e0">
+                    <p>
+                        The Catalyst 2950 and 3550 Switches can forward traffic on a destination SPAN 
+                        port in Cisco IOS Software Release 12.1(13)EA1 and later.
+                    </p>
+                </li>
+                <li style="COLOR: #e0e0e0">
+                    <p>
+                        The Catalyst 3550, 3560, and 3750 Switches can support up to two SPAN sessions 
+                        at a time and can monitor source ports as well as VLANs.</p>
+                </li>
+                <li style="COLOR: #e0e0e0">
+                    <p>
+                        The Catalyst 2970, 3560, and 3750 Switches do not require the configuration of a 
+                        reflector port when you configure an RSPAN session.</p>
+                </li>
+                <li style="COLOR: #e0e0e0">
+                    <p>
+                        The Catalyst 3750 Switches support session configuration with the use of source 
+                        and destination ports that reside on any of the switch stack members.</p>
+                </li>
+                <li style="COLOR: #e0e0e0">
+                    <p>
+                        Only one destination port is allowed per SPAN session, and the same port cannot 
+                        be a destination port for multiple SPAN sessions. Therefore, you cannot have two 
+                        SPAN sessions that use the same destination port.</p>
+                </li>
+            </ul>
+            <p>
+                The SPAN feature configuration commands are similar on the Catalyst 2950 and 
+                Catalyst 3550. However, the Catalyst 2950 cannot monitor the VLANs. You can 
+                configure the SPAN, as in this example:
+            </p>
+            <blockquote>
+                <pre><span class="style3"><span class="style1">C2950#</span><span 
+                    class="style2">configure terminal</span><span class="style1">
+C2950(config)#
+C2950(config)#</span><span class="style2">monitor session 1 source interface fastethernet 0/2</span><span 
+                    class="style1">
+</span></span><i><span class="style3"><span class="style1">
+</span></span><span class="style4">!--- This configures interface Fast Ethernet 0/2 as source port.</span><span 
+                    class="style3"><span class="style1">
+</span></span></i><span class="style3"><span class="style1">
+C2950(config)#</span><span class="style2">monitor session 1 destination interface fastethernet 0/3</span><span 
+                    class="style1">
+</span></span><i><span class="style3"><span class="style1">
+</span></span><span class="style4">!--- This configures interface Fast Ethernet 0/3 as destination port.</span><span 
+                    class="style3"><span class="style1">
+</span></span></i><span class="style3"><span class="style1">
+C2950(config)#
+</span> <span class="style1">
+C2950#</span><span class="style2">show monitor session 1</span><span class="style1">
+Session 1
+---------
+Source Ports:
+    RX Only:       None
+        TX Only:       None
+        Both:          Fa0/2
+Destination Ports: Fa0/3</span></span>
+C2950#</pre>
+            </blockquote>
+            <p>
+                You can also configure a port as a destination for local SPAN and RSPAN for the 
+                same VLAN traffic. In order to monitor traffic for a particular vlan that 
+                resides in two switches directly connected, configure these commands on the 
+                switch that has the destination port. In this example, we monitor traffic from 
+                VLAN 5 that is spread across two switches:</p>
+            <blockquote>
+                <pre>c3750(config)#<b>monitor session 1 source vlan &lt; Remote RSPAN VLAN ID &gt;</b>
+c3750(config)#<b>monitor session 1 source vlan 5</b>
+c3750(config)#<b>monitor session 1 destination fastethernet 0/3</b>
+<i>
+<font color="#0000ff">!--- This configures interface FastEthernet 0/3 as a destination port.</font>
+</i>
+</pre>
+            </blockquote>
+            <p>
+                On the remote switch, use this configuration:</p>
+            <blockquote>
+                <pre>c3750_remote(config)#<b>monitor session 1 source vlan 5</b>
+<i>
+<font color="#0000ff">!--- Specifies VLAN 5 as the VLAN to be monitored.</font>
+</i>
+c3750_remote(config)#<b>monitor session 1 destination remote vlan  &lt;Remote vlan id&gt;</b>
+</pre>
+            </blockquote>
+            <p>
+                In the previous example a port was configured as a destination port for both 
+                local SPAN and the RSPAN to monitor traffic for the same VLAN that resides in 
+                two switches.</p>
+            <p>
+                <b>Note:&nbsp;</b>Unlike the 2900XL and 3500XL Series Switches, the Catalyst 2940, 
+                2950, 2955, 2960, 2970, 3550, 3560, 3560-E, 3750, and 3750-E Series Switches 
+                support SPAN on source port traffic in the Rx direction only (Rx SPAN or ingress 
+                SPAN), in the Tx direction only (Tx SPAN or egress SPAN), or both.</p>
+            <p>
+                <b>Note:&nbsp;</b>The commands in the configuration are not supported on the Catalyst 
+                2950 with Cisco IOS Software Release 12.0(5.2)WC(1) or any software that is 
+                earlier than Cisco IOS Software Release 12.1(6)EA2. Refer to the
+                <a class="con_link" 
+                    href="http://www.cisco.com/en/US/docs/switches/lan/catalyst2950/software/release/12.0_5.2_wc_1_/configuration/guide/scg_mgmt.html#wp1121459" 
+                    style="COLOR: #e0e0e0" target="_blank"><font color="#0000ff"><i>Enabling 
+                Switch Port Analyzer</i> </font></a>section of <a class="con_link" 
+                    href="http://www.cisco.com/en/US/docs/switches/lan/catalyst2950/software/release/12.0_5.2_wc_1_/configuration/guide/scg_mgmt.html" 
+                    style="COLOR: #e0e0e0" target="_blank"><font color="#0000ff">Managing 
+                Switches</font></a> in order to configure SPAN on a Catalyst 2950 with software 
+                that is earlier than Cisco IOS Software Release 12.1(6)EA2.</p>
+            <p>
+                <b>Note:&nbsp;</b>Catalyst 2950 Switches that use Cisco IOS Software Release 
+                12.1.(9)EA1d and earlier releases in the Cisco IOS Software Release 12.1 train 
+                support SPAN. However, all packets that are seen on the SPAN destination port 
+                (connected to the sniffing device or PC) have an IEEE 802.1Q tag, even though 
+                the SPAN source port (monitored port) might not be an 802.1Q trunk port. If the 
+                sniffing device or PC network interface card (NIC) does not understand 
+                802.1Q-tagged packets, the device can drop the packets or have difficulty as it 
+                tries to decode the packets. The ability to see the 802.1Q-tagged frames is 
+                important only when the SPAN source port is a trunk port. With Cisco IOS 
+                Software Release 12.1(11)EA1 and later, you can enable and disable tagging of 
+                the packets at the SPAN destination port. Issue the <b>monitor session <i>
+                session_number </i>destination interface <i>interface_id</i> encapsulation dot1q</b> 
+                command in order to enable encapsulation of the packets at the destination port. 
+                If you do not specify the <b>encapsulation</b> keyword, the packets are sent 
+                untagged, which is the default in Cisco IOS Software Release 12.1(11)EA1 and 
+                later.</p>
+            <table bgcolor="#ffffff" border="1" cellpadding="3" cellspacing="1" width="60%">
+                <tr>
+                    <th bgcolor="#ccccff">
+                        <p>
+                            Feature</p>
+                    </th>
+                    <th bgcolor="#ccccff">
+                        <p>
+                            Catalyst 2950/3550</p>
+                    </th>
+                </tr>
+                <tr>
+                    <td bgcolor="#ffffff" style="COLOR: #e0e0e0">
+                        <p>
+                            Ingress (inpkts) <i>enable/disable</i> option</p>
+                    </td>
+                    <td bgcolor="#ffffff" style="COLOR: #e0e0e0">
+                        <p>
+                            Cisco IOS Software Release 12.1(12c)EA1</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td bgcolor="#ffffff" style="COLOR: #e0e0e0">
+                        <p>
+                            RSPAN</p>
+                    </td>
+                    <td bgcolor="#ffffff" style="COLOR: #e0e0e0">
+                        <p>
+                            Cisco IOS Software Release 12.1(12c)EA1</p>
+                    </td>
+                </tr>
+            </table>
+            <p>
+                <table bgcolor="#ffffff" border="1" cellpadding="3" cellspacing="1" width="60%">
+                    <tr>
+                        <th bgcolor="#ccccff">
+                            <p>
+                                Feature</p>
+                        </th>
+                        <th bgcolor="#ccccff">
+                            <p>
+                                Catalyst 2940<sup>1</sup>, 2950, 2955, 2960, 2970, 3550, 3560, 3750</p>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#ffffff" style="COLOR: #e0e0e0">
+                            <p>
+                                Rx or both SPAN sessions</p>
+                        </td>
+                        <td bgcolor="#ffffff" style="COLOR: #e0e0e0">
+                            <p>
+                                2</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#ffffff" style="COLOR: #e0e0e0">
+                            <p>
+                                Tx SPAN sessions</p>
+                        </td>
+                        <td bgcolor="#ffffff" style="COLOR: #e0e0e0">
+                            <p>
+                                2</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#ffffff" style="COLOR: #e0e0e0">
+                            <p>
+                                Rx, Tx, or both RSPAN source sessions</p>
+                        </td>
+                        <td bgcolor="#ffffff" style="COLOR: #e0e0e0">
+                            <p>
+                                2</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#ffffff" style="COLOR: #e0e0e0">
+                            <p>
+                                RSPAN destination</p>
+                        </td>
+                        <td bgcolor="#ffffff" style="COLOR: #e0e0e0">
+                            <p>
+                                2</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#ffffff" style="COLOR: #e0e0e0">
+                            <p>
+                                Total sessions</p>
+                        </td>
+                        <td bgcolor="#ffffff" style="COLOR: #e0e0e0">
+                            <p>
+                                2</p>
+                        </td>
+                    </tr>
+                </table>
+            </p>
+            <p>
+            </p>
+            <p>
+                <sup>1</sup> The Catalyst 2940 Switches only support local SPAN. RSPAN is not 
+                supported in this platform.</p>
+            <p>
+                Refer to these configuration guides for more information on the configuration of 
+                SPAN and RSPAN:</p>
+            <p>
+                &nbsp;<a class="con_link" 
+                    href="http://www.cisco.com/en/US/products/hw/switches/ps708/products_tech_note09186a008015c612.shtml#topic5" 
+                    style="COLOR: #e0e0e0" target="_blank"><font color="#0000ff">http://www.cisco.com/en/US/products/hw/switches/ps708/products_tech_note09186a008015c612.shtml#topic5</font></a></p>
+            <p>
+                &nbsp;</p>
+            <center>
+                <h5>
+                    <font color="#0000ff">Switch Port Mirroring </font>
+                </h5>
+            </center>
+            <p>
+                <b>Port Mirroring, Port Spanning</b> 혹은 <b>Port Aliasing</b> 이라고 불리는 기술은 대부분의 
+                스위치 벤더들이 가지고 있는 트래픽 Forwarding 기술로써 트래픽을 특정 모니터 포트로 보낼 수 있다. 따라서, 이 모니터 포트에 
+                Network Analyzer 를 Tapping 하므로써 스위치에 흐르는 트래픽을 Capture 하거나 분석할 수 있다.
+                <br />
+                <font color="#ff0000"><strong><span style="FONT-SIZE: 12pt">그러나,</span></strong>
+                </font>일부 스위치들은 에러들이나 VLAN 정보에 대해 Filtering을 하는 경우가 있어 모니터 포트에는 에러나 VLAN 정보가 
+                나타나지 않는 경우가 있다. 또한, Fast Ethernet 링크상에서 Full-Duplex Mode 일 경우 Port Mirroing이 
+                동작하지 않거나 트래픽이 많은 경우 스위치의 성능 저하를 초래할 수도 있으므로 주의하여 사용하여야 한다. 특히, 10Mbps 포트를 
+                100Mbps 포트로 Mirroring 하거나 하나의 포트를 여러개의 포트로 그룹 mirroring 할 때는 monitor port에 
+                overrun이 발생할 수 있으므로 주의해야 한다.
+                <br />
+            </p>
+            <div style="COLOR: #e0e0e0">
+                또한, 스위치상에서 Port Mirroring 이 지원되지 않을 경우, 스위치와 서버 혹은 스위치와 라우터등의 사이에 Hub을 삽입하는 <b>
+                Hub Out</b> 방법을 사용한다. 그러나, 이 방법도 Half Duplex 만으로 동작하는 등의 문제가 있다.
+            </div>
+            <div style="COLOR: #e0e0e0">
+                <br />
+                &nbsp;</div>
+            <div style="COLOR: #e0e0e0">
+                <font color="#7093db"><font color="#3c3f45"><strong>스위치 Mirror Port 사용에 따른 일반적인 
+                문제들</strong></font><br />
+                <font color="#3c3f45">- Switch performance degradation<br />
+                - Inability to mirror errors such as undersize and oversize packets, and packets 
+                with a bad CRC.<br />
+                - Inability to view VLAN traffic<br />
+                - Poor full-duplex support<br />
+                </font>
+                <div style="COLOR: #e0e0e0">
+                    <font color="#3c3f45">Solution : Full-duplex 10/100 Ethernet Splitters (Tap, 
+                    Pod)</font><br />
+                    </font>
+                    <br />
+                    <div style="COLOR: #e0e0e0">
+                        상기와 같은 문제점을 없애기 위해 전용의 <b>Passive Tap (Splitter)</b> 을 사용하기도 한다. 이것은 허브와 같이 생겨서 
+                        전문적으로 Port Mirroring을 수행하는 장비이다. NAI (Sniffer)사에서는 Tap을 <b>Pod</b> 라고 부른다.
+                        <br />
+                        <div style="COLOR: #e0e0e0">
+                            Port Mirroing에 대한 용어는 벤더들마다 다르게 사용하고 있으며, Cisco의 경우 <b>SPAN (Switch Port 
+                            ANalyzer)</b>, 3Com은 <b>Roving Analysis</b> 라고 부르며 모니터링 되는 포트를 monitor port, 미러된 
+                            트래픽을 수신하는 포트를 analyzer port 라고 한다. 또한 Network Instruments의 경우 <b>port looping</b> 
+                            혹은 <b>port roving</b> 이라고 부르기도한다.
+                            <br />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p>
+            - Goodinternet co.,Ltd -
+        </p>
+	
+	</body>
+</html>
