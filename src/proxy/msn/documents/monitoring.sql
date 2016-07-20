@@ -34,9 +34,6 @@ FROM TB_iEIP_MONITOR_USRS x,
 ) y
 WHERE x.mailadrs=y.mailadrs
 
-DELETE TB_iEIP_MONITOR_MSGS 
-WHERE sender='lisa3907@msn.com' OR receiver='lisa3907@msn.com'
-
 SELECT * FROM TB_iEIP_MONITOR_USRS
 SELECT * FROM TB_iEIP_MONITOR_BUDDY
 SELECT * FROM TB_iEIP_MONITOR_GROUP
@@ -52,13 +49,12 @@ ORDER BY a.norec DESC
 
 SELECT sentime, seqno, sender, receiver, content
 FROM TB_iEIP_MONITOR_MSGS
-WHERE content like '%Æò°¡%'
+WHERE content like '%%'
 ORDER BY seqno DESC
 
 SELECT sentime, sendipadrs, sender, sendernick, recvipadrs, receiver, content
 FROM TB_iEIP_MONITOR_MSGS
 WHERE CONVERT(nvarchar(10), sentime, 121)='2006-07-13'
-AND (sender='akakkiwwi@hotmail.com' OR receiver='akakkiwwi@hotmail.com')
 ORDER BY seqno DESC
 
 SELECT * FROM
